@@ -4,7 +4,7 @@
 </head>
 <body>
 <?php
-    $html = file_get_contents ('http://bash.im/index/985');
+    $html = file_get_contents ('http://bash.im');
     $regexp = '#<div class="quote">.*<div class="actions">.*<span class="rating-o">.*>(.+)<.*</span>.*<span class="date">'
     .'(.+)</span>.*<a href="/quote/.+" class="id">(.+)</a>.*</div>.*<div class="text">(.+)</div>.*</div>#Uis';
 
@@ -12,7 +12,7 @@
 
 ?>
 
-    <?php foreach ($arr_text as $key => $value):?>
+    <?php foreach ($arr_text as $value):?>
         <center>
             <div style=" width: 808px; background: #CDC5BF; padding: 2px; font-size: 14px" align="center">
                 <pre>Rating: <?echo $value[1];?>        Date: <?echo $value[2];?>         Number: <?echo $value[3];?></pre>
