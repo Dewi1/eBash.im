@@ -1,21 +1,19 @@
-<?php
-    if($_POST['save'] == 'Save text') {
-        $text = 'bash.txt';
-        $f = fopen ($text,'r+');
-        $t= fread($f, filesize('text.txt'));
-        foreach ($arr_text as $key => $value) {
-            $current .= "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
-                . "-------------------------------------------------------------------------------------------------------\r\n";
-        }
-        $cur = preg_replace("/<br\/?>/i", "\r\n", $current);
-        $cur_re = preg_replace("/&quot;/i", "\"", $cur);
-        //file_put_contents($text, $cur2);
-        fwrite($f, $cur_re);
-        fclose($f);
-    }
-
-
-
-
-
-
+<?php $title = 'Save'; ?>
+<form  method="post" action="/index.php?page=save">
+    <center><br>
+        <div style=" width: 800px; align=center">
+            <input type="submit" value="Сохранить главную страницу" name="save2">
+        </div>
+    </center><br>
+    <?php if($_POST['save2'] == "Сохранить последнюю страницу"):?>
+        <?php $current = file_save($arr_text);?>
+        <br><center>Документ был сохранен как "Bash.txt".</center>
+    <?php endif ?>
+</form><br>
+<center><br>
+    <div style=" width: 800px; align=center">
+        <button type="button">
+            <a href="/index.php?page=eBash.im">Вернуться</a>
+        </button>
+    </div><br>
+</center>

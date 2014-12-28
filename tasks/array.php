@@ -18,25 +18,18 @@ setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russ
 </center>
 <?php
 
-function double($n) {
-    return $n*$n;
-}
 if($_POST["arr"] != '') {
-    $arr = $_POST["arr"];
-    $array = explode(", ", $arr);
-    $array_sq = array_map("double", $array);
+    $array = explode(", ", $_POST["arr"]);
+    $array_sq = array_map(function($x){return $x*$x;}, $array);
 
     echo '<br><center>Ваш массив в Var_dump():<br><br>';
     var_dump($array_sq);
-    echo '<br><br><br><br>';
-    foreach ($array_sq as $key => $array_n) {
-        echo $key . ' элемент массива: ' . $array_n . '<br>';
-    }
     echo '</center>';
 }else{
     echo '<center>Введите данные!</center>';
 }
+// array_key_exists($_POST["arr"], $array)
+
 ?>
 </body>
 </html>
-
