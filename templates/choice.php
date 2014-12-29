@@ -14,15 +14,26 @@
 </form>
 <?php if($_POST['save'] == "Сохранить"):?>
     <center><br>
-        <?php $l = $_POST['first']; $k = $_POST['second']; ?>
-        <?php $text = save_all($l, $k);?>
-        Страницы были сохранены в файлы:<br>
-        <? for($n=$l; $n<=$k; $n++):?>
-            <?php echo 'Bash_'.$n.'.txt';?><br>
+    <? $arr_max = max_page();?>
+    <?php $l = $_POST['first']; $k = $_POST['second']; ?>
+    <?php $text = save_all($l, $k);?>
+    <?php if ($k >= $l):?>
+        В папку "saves" были сохранены файлы:<br><br>
+        <?php for($n=$l; $n<=$k; $n++):?>
+            <?php if  ($n <= $arr_max[1]):?>
+                <?php echo 'Bash_'.$n.'.txt';?><br>
+            <?php else:?>
+                Файл: <?php echo 'Bash_'.$n.'.txt';?> не был сохранен.<br>
+            <?php endif?>
         <?php endfor ?>
+    <?php else:?>
+        Файлы не были сохранены.
+    <?php endif?><br>
+    <?php if  ($n > $arr_max[1]):?>
+        Таких страниц не существует.
+    <?php endif?>
     </center>
 <?php endif?>
-
 <center><br><br><br>
     <div style=" width: 800px; align=center">
         <button type="button">

@@ -41,3 +41,5 @@ setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russ
 ?>
 </body>
 </html>
+//отображать нотисы php настройки
+//прочитать isset();

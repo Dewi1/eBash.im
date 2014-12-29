@@ -18,7 +18,7 @@ setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russ
 </center>
 <?php
 
-if($_POST["arr"] != '') {
+if(array_key_exists("arr", $_POST) && $_POST["arr"] != '' ) {
     $array = explode(", ", $_POST["arr"]);
     $array_sq = array_map(function($x){return $x*$x;}, $array);
 
@@ -28,7 +28,6 @@ if($_POST["arr"] != '') {
 }else{
     echo '<center>Введите данные!</center>';
 }
-// array_key_exists($_POST["arr"], $array)
 
 ?>
 </body>
