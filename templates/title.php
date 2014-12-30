@@ -24,4 +24,36 @@
             </button>
         </div><br>
     </center>
+    <?if($_SESSION['auth']=='admin'):?>
+        <form >
+            <div style="position:absolute;top:40px; right:10px; width:80px; text-align:center;">
+                <button type="button">
+                    <a href="/index.php?page=login">Выйти</a>
+                </button>
+            </div>
+        </form>
+    <?endif?>
+    <?if($_SESSION['auth']=='user'):?>
+        <form >
+            <div style="position:absolute;top:10px; right:10px; width:80px; text-align:center;">
+                <button type="button">
+                    <a href="/index.php?page=login">Выйти</a>
+                </button>
+            </div>
+        </form>
+    <?endif?>
+    <?if($_SESSION['auth']!='user' && $_SESSION['auth']!='admin'):?>
+        <form >
+            <div style="position:absolute; top:10px; right:10px; width:80px; text-align:center;">
+                <button type="button">
+                    <a href="/index.php?page=login">Войти</a>
+                </button>
+            </div>
+            <div style="position:absolute; top:40px; right:20px; width:80px; text-align:center;">
+                <button type="button">
+                    <a href="/index.php?page=register">Регистрация</a>
+                </button>
+            </div>
+        </form>
+    <?endif?>
 </form>

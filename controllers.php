@@ -27,4 +27,16 @@ function html_choice() {
     $content = ob_get_clean();
     include 'templates/layout.php';
 }
-
+function login() {
+    //$users = authorization();
+    ob_start();
+    include 'templates/login.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}
+function register() {
+    ob_start();
+    include 'templates/register.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}

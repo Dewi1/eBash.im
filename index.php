@@ -1,4 +1,11 @@
 <?php
+session_start();
+define('DS', DIRECTORY_SEPARATOR);
+require 'model/database.php';
+
+require 'model/authorisation.php';
+require 'model/registration.php';
+require 'model/authorised.php';
 require 'model/functions.php';
 require 'controllers.php';
 //error_reporting(E_ALL);
@@ -20,6 +27,12 @@ switch ($page) {
         break;
     case "save":
         html_parser();
+        break;
+    case "login":
+        login();
+        break;
+    case "register":
+        register();
         break;
     default:
         echo '<html><body><h1>Page Not Found</h1></body></html>';
