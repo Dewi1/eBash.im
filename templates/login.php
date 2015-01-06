@@ -21,7 +21,8 @@
             <input type="submit" value="Вход" style="width:80px; text-align:center;">
         <?php endif?>
     </form>
-
+    <?php //$get_pass = $_POST["password"];?>
+    <?php //$pass = sha1($get_pass);?>
     <?if($_SESSION['auth'] == 'user'):?>
         <br><br>
         <h2>Вы авторизированы как USER</h2>

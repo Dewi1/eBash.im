@@ -8,14 +8,14 @@ function html_title() {
     include 'templates/layout.php';
 }
 function html_printer() {
-    $arr_text = file_find();
+    $arr_text = get_jokes();
     ob_start();
     include 'templates/printing.php';
     $content = ob_get_clean();
     include 'templates/layout.php';
 }
 function html_parser() {
-    $arr_text = file_find();
+    $arr_text = get_jokes();
     ob_start();
     include 'templates/save.php';
     $content = ob_get_clean();
@@ -28,7 +28,6 @@ function html_choice() {
     include 'templates/layout.php';
 }
 function login() {
-    //$users = authorization();
     ob_start();
     include 'templates/login.php';
     $content = ob_get_clean();
@@ -37,6 +36,13 @@ function login() {
 function register() {
     ob_start();
     include 'templates/register.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}
+function db_save() {
+    $arr_text = get_jokes();
+    ob_start();
+    include 'templates/db_save.php';
     $content = ob_get_clean();
     include 'templates/layout.php';
 }

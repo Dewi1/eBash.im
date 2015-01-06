@@ -5,10 +5,10 @@
         <center>
             <p>Введите страницы для скачивания:</p>
             <p>C: <input name="first" type="number" max="1500" min="1" value="1" style="width:100px" title="1-1500">
-            По: <input name="second" type="number" max="1500" min="1" value="1" style="width:100px" title="1-1500"></p>
+            По: <input name="last" type="number" max="1500" min="1" value="1" style="width:100px" title="1-1500"></p>
         </center>
         <center><br>
-            <form action="bash.php" method="post">
+            <form action="choice.php" method="post">
                 <input type="submit" value="Сохранить" name="save">
             </form>
         </center>
@@ -16,21 +16,21 @@
     <?php if($_POST['save'] == "Сохранить"):?>
         <center><br>
         <? $arr_max = max_page();?>
-        <?php $l = $_POST['first']; $k = $_POST['second']; ?>
-        <?php $text = save_all($l, $k);?>
-        <?php if ($k >= $l):?>
+        <?php $first_num = $_POST['first']; $last_num = $_POST['last']; //убрать все проверки, оставить только шаблон вывода?>
+            <?php $text = save_all($first_num, $last_num);?>
+        <?php if ($last_num >= $first_num):?>
             В папку "saves" были сохранены файлы:<br><br>
-            <?php for($n=$l; $n<=$k; $n++):?>
-                <?php if  ($n <= $arr_max[1]):?>
-                    <?php echo 'Bash_'.$n.'.txt';?><br>
+            <?php for($num=$first_num; $num<=$last_num; $num++):?>
+                <?php if  ($num <= $arr_max[1]):?>
+                    <?php echo 'Bash_'.$num.'.txt';?><br>
                 <?php else:?>
-                    Файл: <?php echo 'Bash_'.$n.'.txt';?> не был сохранен.<br>
+                    Файл: <?php echo 'Bash_'.$num.'.txt';?>, не был сохранен.<br>
                 <?php endif?>
             <?php endfor ?>
         <?php else:?>
             Файлы не были сохранены.
         <?php endif?><br>
-        <?php if  ($n > $arr_max[1]):?>
+        <?php if  ($num > $arr_max[1]):?>
             Таких страниц не существует.
         <?php endif?>
         </center>

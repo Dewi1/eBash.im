@@ -5,7 +5,6 @@ require 'model/database.php';
 
 require 'model/authorisation.php';
 require 'model/registration.php';
-require 'model/authorised.php';
 require 'model/functions.php';
 require 'controllers.php';
 //error_reporting(E_ALL);
@@ -33,6 +32,9 @@ switch ($page) {
         break;
     case "register":
         register();
+        break;
+    case "DB_save":
+        db_save();
         break;
     default:
         echo '<html><body><h1>Page Not Found</h1></body></html>';

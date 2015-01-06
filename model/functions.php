@@ -1,6 +1,6 @@
 <?php
-function file_find(){
-    $html = file_get_contents('http://bash.im');
+function get_jokes($url = 'http://bash.im'){
+    $html = file_get_contents($url);
     $regexp = '#<div class="quote">.*<div class="actions">.*<span class="rating-o">.*>(.+)<.*</span>.*<span class="date">'
         . '(.+)</span>.*<a href="/quote/.+" class="id">(.+)</a>.*</div>.*<div class="text">(.+)</div>.*</div>#Uis';
 
@@ -10,59 +10,44 @@ function file_find(){
 }
 function max_page(){
     $html = file_get_contents('http://bash.im/index/1');
-    //$regexp = '#<input type="text" name="page" class="page" pattern="[0-9]+" numeric="integer" min="1" max="(.+)" value="1">#Uis';
     $regexp = '/max="([\d]*)"/i';
     preg_match($regexp, $html, $arr_max);
 
     return $arr_max;
 }
-function file_save(&$arr_text)
+function file_save($arr_text, $text = 'saves/Bash.txt')
 {
-    $text = 'saves/Bash.txt';
     $f = fopen($text, 'a');
     foreach ($arr_text as $value) {
         $current = "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
-        ."-------------------------------------------------------------------------------------------------\r\n";
-        $current = preg_replace("/<br\/?>/i", "\r\n", $current);
-        $current = preg_replace("/<br\s\/?>/i", "\r\n", $current);
-        $current = preg_replace("/&quot;/i", "\"", $current);
-        $current = preg_replace("/&lt;/i", "<", $current);
-        $current = preg_replace("/&gt;/i", ">", $current);
+            ."-------------------------------------------------------------------------------------------------\r\n";
+        $patterns[0] = "/<br\/?>/i";
+        $patterns[1] = "/<br\s\/?>/i";
+        $patterns[2] = "/&quot;/i";
+        $patterns[3] = "/&lt;/i";
+        $patterns[4] = "/&gt;/i";
+        $replacements[4] = "\r\n";
+        $replacements[3] = "\r\n";
+        $replacements[2] = "\"";
+        $replacements[1] = "<";
+        $replacements[0] = ">";;
+        $current = preg_replace($patterns, $replacements, $current);
         fwrite($f, $current);
     }
     fclose($f);
 
     return $current;
 }
-function save_all(&$l, &$k)
+function save_all(&$first_num, &$last_num)
 {
-    for($n=$l; $n<=$k; $n++) {
+    for($num=$first_num; $num<=$last_num; $num++) {
         $arr_max = max_page();
-        if($n <= $arr_max[1]) {
-            $html = file_get_contents('http://bash.im/index/' . $n . '');
-            $regexp = '#<div class="quote">.*<div class="actions">.*<span class="rating-o">.*>(.+)<.*</span>.*<span class="date">'
-                . '(.+)</span>.*<a href="/quote/.+" class="id">(.+)</a>.*</div>.*<div class="text">(.+)</div>.*</div>#Uis';
-
-            preg_match_all($regexp, $html, $arr_text, PREG_SET_ORDER);
-
-            $text = 'saves/Bash_' . $n . '.txt';
-            $f = fopen($text, 'a');
-
-            foreach ($arr_text as $value) {
-                $current = "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
-                    . "-------------------------------------------------------------------------------------------------\r\n";
-                $current = preg_replace("/<br\/?>/i", "\r\n", $current);
-                $current = preg_replace("/<br\s\/?>/i", "\r\n", $current);
-                $current = preg_replace("/&quot;/i", "\"", $current);
-                $current = preg_replace("/&lt;/i", "<", $current);
-                $current = preg_replace("/&gt;/i", ">", $current);
-                fwrite($f, $current);
-            }
-
-            fclose($f);
+        if($num <= $arr_max[1]) {
+            $arr_text = get_jokes('http://bash.im/index/' . $num);
+            $current = file_save($arr_text, $text = 'saves/Bash_' . $num . '.txt');
         }
     }
-    return $n;
+    return $num;
 }
 function file_download() {
     $file = 'saves/Bash.txt';
@@ -77,8 +62,10 @@ function file_download() {
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
+        header('Content-Length: ' . filesize($file)); //вместо Content-Length вернуть контент строки str-length
         readfile($file);
+        //собрать все цитаты в 1 переменную, получить размер и зделать echo
+        //вместо скачки на комп - сразу юзеру
     }
     return $file;
 }

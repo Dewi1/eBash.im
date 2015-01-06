@@ -23,6 +23,11 @@
                 <a href="/index.php?page=save">Скачать свежие цитаты</a>
             </button>
         </div><br>
+        <div style=" width: 800px; align=center">
+            <button type="button">
+                <a href="/index.php?page=DB_save">Сохранить цитаты в базу данных</a>
+            </button>
+        </div><br>
     </center>
     <?if($_SESSION['auth']=='admin'):?>
         <form >
