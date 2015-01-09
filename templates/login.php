@@ -5,8 +5,8 @@
             <?php $_SESSION['auth'] = 'admin'; ?>
         <?php endif?>
         <?php $login = $_POST["login"];?>
-        <?php $password = $_POST["password"];?>
-        <?php $authorization = login_in($password, $login)?>
+        <?php $password = $_POST["pass"];?>
+        <?php $users = login_in($password, $login)?>
         <?php if($_SESSION['auth'] == 'admin' || $_SESSION['auth'] == 'user'):?>
             <div style="position:absolute; top:40px; left:10px; width:120px; text-align:center;">
                 <input name='submit' type='submit' value='Выход'>

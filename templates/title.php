@@ -1,9 +1,21 @@
 <?php $title = 'eBash.im'; ?>
 <form  method="post" action="/index.php?page=save">
     <center>
-        <div style=" width: 808px;" align="center">
-            <h1>Здравствуйте!</h1>
-        </div>
+        <?if($_SESSION['auth']=='admin'):?>
+            <div style=" width: 808px;" align="center">
+                <h1>Здравствуй, админ!</h1>
+            </div>
+        <?php else:?>
+            <?if($_SESSION['auth']=='user'):?>
+                <div style=" width: 808px;" align="center">
+                    <h1>Здравствуйте, <?php echo $_SESSION['user'];?>!</h1>
+                </div>
+            <?php else:?>
+                <div style=" width: 808px;" align="center">
+                    <h1>Здравствуйте!</h1>
+                </div>
+            <?php endif?>
+        <?php endif?>
         <div style=" width: 808px; font-size: 22px" align="center">
             <pre>Этот сайт посвящен сайту Bash.im</pre>
             <pre>У нас вы можете:</pre><br>
@@ -21,11 +33,6 @@
         <div style=" width: 800px; align=center">
             <button type="button">
                 <a href="/index.php?page=save">Скачать свежие цитаты</a>
-            </button>
-        </div><br>
-        <div style=" width: 800px; align=center">
-            <button type="button">
-                <a href="/index.php?page=DB_save">Сохранить цитаты в базу данных</a>
             </button>
         </div><br>
     </center>

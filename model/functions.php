@@ -21,21 +21,25 @@ function file_save($arr_text, $text = 'saves/Bash.txt')
     foreach ($arr_text as $value) {
         $current = "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
             ."-------------------------------------------------------------------------------------------------\r\n";
-        $patterns[0] = "/<br\/?>/i";
-        $patterns[1] = "/<br\s\/?>/i";
-        $patterns[2] = "/&quot;/i";
-        $patterns[3] = "/&lt;/i";
-        $patterns[4] = "/&gt;/i";
-        $replacements[4] = "\r\n";
-        $replacements[3] = "\r\n";
-        $replacements[2] = "\"";
-        $replacements[1] = "<";
-        $replacements[0] = ">";;
-        $current = preg_replace($patterns, $replacements, $current);
+        $current = file_change($current);
         fwrite($f, $current);
     }
     fclose($f);
 
+    return $current;
+}
+function file_change(&$current){
+    $patterns[0] = "/<br\/?>/i";
+    $patterns[1] = "/<br\s\/?>/i";
+    $patterns[2] = "/&quot;/i";
+    $patterns[3] = "/&lt;/i";
+    $patterns[4] = "/&gt;/i";
+    $replacements[4] = "\r\n";
+    $replacements[3] = "\r\n";
+    $replacements[2] = "\"";
+    $replacements[1] = "<";
+    $replacements[0] = ">";;
+    $current = preg_replace($patterns, $replacements, $current);
     return $current;
 }
 function save_all(&$first_num, &$last_num)
@@ -49,23 +53,44 @@ function save_all(&$first_num, &$last_num)
     }
     return $num;
 }
-function file_download() {
-    $file = 'saves/Bash.txt';
-    if (file_exists($file)) {
-        if (ob_get_level()) {
-            ob_end_clean();
-        }
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($file));
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file)); //вместо Content-Length вернуть контент строки str-length
-        readfile($file);
-        //собрать все цитаты в 1 переменную, получить размер и зделать echo
-        //вместо скачки на комп - сразу юзеру
+function string_save(){
+    $arr_text = get_jokes();
+    foreach ($arr_text as $value) {
+        $text .= $value[1] . $value[2] . $value[3] . $value[4] . "\n";
     }
-    return $file;
+    return $text;
+}
+function file_download(&$text) {
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="Bash.txt"');
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . strlen($text));
+    echo $text;
+
+    return $text;
+}
+function save_joke($num){
+    $arr_text = get_jokes('http://bash.im/index/' . $num);
+    foreach ($arr_text as $value) {
+        $rating = $value[1]; $date = $value[2]; $number = $value[3];
+        $value[4]=iconv("windows-1251","utf-8",$value[4]);
+        $current = $value[4]; $page_id = $num;
+        $current = file_change($current);
+        $joke = $current;
+        $result_joke = add_joke($number, $date, $rating, $joke, $page_id);
+    }
+    $number_page = $num;
+    $page_id = $num;
+    $users = user_id();
+    $user_id = $users[0][0];
+    $result_page = add_page($number_page);
+    $result_user_page = add_user_page($page_id, $user_id);
+    return $result_joke;
 }

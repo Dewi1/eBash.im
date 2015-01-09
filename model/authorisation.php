@@ -1,5 +1,5 @@
 <?php session_start();
-function login_in($password=0, $login=0) {
+function login_in($password, $login) {
     $myConnect = open_database_connection();
     $qr_result_users = mysql_query("select * from users where login='$login'");
     $users = array();
@@ -11,7 +11,6 @@ function login_in($password=0, $login=0) {
             return false;
         }
     }
-    mysql_close($myConnect);
     return $users;
 }
 function isAuthorized() {

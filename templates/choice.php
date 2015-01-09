@@ -16,12 +16,13 @@
     <?php if($_POST['save'] == "Сохранить"):?>
         <center><br>
         <? $arr_max = max_page();?>
-        <?php $first_num = $_POST['first']; $last_num = $_POST['last']; //убрать все проверки, оставить только шаблон вывода?>
+        <?php $first_num = $_POST['first']; $last_num = $_POST['last'];?>
             <?php $text = save_all($first_num, $last_num);?>
         <?php if ($last_num >= $first_num):?>
             В папку "saves" были сохранены файлы:<br><br>
             <?php for($num=$first_num; $num<=$last_num; $num++):?>
                 <?php if  ($num <= $arr_max[1]):?>
+                    <?php save_joke($num);?>
                     <?php echo 'Bash_'.$num.'.txt';?><br>
                 <?php else:?>
                     Файл: <?php echo 'Bash_'.$num.'.txt';?>, не был сохранен.<br>

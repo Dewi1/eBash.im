@@ -39,10 +39,6 @@ function register() {
     $content = ob_get_clean();
     include 'templates/layout.php';
 }
-function db_save() {
-    $arr_text = get_jokes();
-    ob_start();
-    include 'templates/db_save.php';
-    $content = ob_get_clean();
-    include 'templates/layout.php';
+function save_file() {
+    include 'templates/save_file.php';
 }

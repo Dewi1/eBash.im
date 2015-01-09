@@ -33,9 +33,10 @@ switch ($page) {
     case "register":
         register();
         break;
-    case "DB_save":
-        db_save();
+    case "save_file":
+        save_file();
         break;
+
     default:
         echo '<html><body><h1>Page Not Found</h1></body></html>';
         break;

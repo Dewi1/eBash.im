@@ -1,8 +1,6 @@
 <?php session_start();
 function registration(&$login, &$password, &$name, &$email, &$about, &$sex, &$date) {
-    $myConnect = open_database_connection();
     $register = mysql_query("INSERT INTO users (login, password, name, email, about, sex, age) VALUES('$login', '$password', '$name', '$email', '$about', '$sex', '$date')");
-    close_database_connection($myConnect);
     return $register;
 }
 function month(&$month_word) {
