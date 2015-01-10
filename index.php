@@ -36,6 +36,12 @@ switch ($page) {
     case "save_file":
         save_file();
         break;
+    case "Profile":
+        profile();
+        break;
+    case "Profile_saves":
+        profile_saves();
+        break;
 
     default:
         echo '<html><body><h1>Page Not Found</h1></body></html>';

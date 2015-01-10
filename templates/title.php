@@ -44,6 +44,11 @@
                 </button>
             </div>
         </form>
+        <div style="position:fixed;top:40px; right:10px; width:80px; text-align:center;">
+            <button type="button">
+                <a href="/index.php?page=save">Профиль</a>
+            </button>
+        </div><br>
     <?endif?>
     <?if($_SESSION['auth']=='user'):?>
         <form >
@@ -53,6 +58,11 @@
                 </button>
             </div>
         </form>
+        <div style="position:fixed;top:40px; right:10px; width:80px; text-align:center;">
+            <button type="button">
+                <a href="/index.php?page=Profile">Профиль</a>
+            </button>
+        </div><br>
     <?endif?>
     <?if($_SESSION['auth']!='user' && $_SESSION['auth']!='admin'):?>
         <form >

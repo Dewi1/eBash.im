@@ -55,8 +55,9 @@ function save_all(&$first_num, &$last_num)
 }
 function string_save(){
     $arr_text = get_jokes();
+    $text = 0;
     foreach ($arr_text as $value) {
-        $text .= $value[1] . $value[2] . $value[3] . $value[4] . "\n";
+        $text .= $value[1] & $value[2] & $value[3] & $value[4];
     }
     return $text;
 }

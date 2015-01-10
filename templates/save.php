@@ -13,10 +13,10 @@
         </center>
     <?php endif ?>
 </form><br>
-<center><br>
-    <div style=" width: 800px; align=center">
+<form >
+    <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
         <button type="button">
             <a href="/index.php?page=eBash.im">Вернуться</a>
         </button>
-    </div><br>
-</center>
+    </div>
+</form>

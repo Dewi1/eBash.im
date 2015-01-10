@@ -1,11 +1,4 @@
 <?php $title = 'Printing'; ?>
-<center>
-    <div style=" width: 800px; align=center">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">Вернуться</a>
-        </button>
-    </div><br><br>
-</center>
 <form  method="post" action="/index.php?page=save">
     <?php foreach ($arr_text as $key => $value):?>
         <center>
@@ -21,10 +14,10 @@
         <br><br>
     <? endforeach ?>
 </form>
-<center>
-    <div style=" width: 800px; align=center">
+<form >
+    <div style="position:fixed; top:10px; right:10px; width:80px; text-align:center;">
         <button type="button">
             <a href="/index.php?page=eBash.im">Вернуться</a>
         </button>
-    </div><br>
-</center>
+    </div>
+</form>

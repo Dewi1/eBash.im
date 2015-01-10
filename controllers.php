@@ -42,3 +42,15 @@ function register() {
 function save_file() {
     include 'templates/save_file.php';
 }
+function profile() {
+    ob_start();
+    include 'templates/profile.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}
+function profile_saves() {
+    ob_start();
+    include 'templates/profile_saves.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}
