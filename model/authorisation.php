@@ -1,6 +1,5 @@
 <?php session_start();
 function login_in($password, $login) {
-    $myConnect = open_database_connection();
     $qr_result_users = mysql_query("select * from users where login='$login'");
     $users = array();
     while ($users = mysql_fetch_array($qr_result_users)) {

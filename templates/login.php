@@ -5,7 +5,7 @@
             <?php $_SESSION['auth'] = 'admin'; ?>
         <?php endif?>
         <?php $login = $_POST["login"];?>
-        <?php $password = $_POST["pass"];?>
+        <?php $password = sha1($_POST["pass"]);?>
         <?php $users = login_in($password, $login)?>
         <?php if($_SESSION['auth'] == 'admin' || $_SESSION['auth'] == 'user'):?>
             <div style="position:absolute; top:40px; left:10px; width:120px; text-align:center;">
@@ -21,8 +21,6 @@
             <input type="submit" value="Вход" style="width:80px; text-align:center;">
         <?php endif?>
     </form>
-    <?php //$get_pass = $_POST["password"];?>
-    <?php //$pass = sha1($get_pass);?>
     <?if($_SESSION['auth'] == 'user'):?>
         <br><br>
         <h2>Вы авторизированы как USER</h2>

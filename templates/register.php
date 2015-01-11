@@ -73,7 +73,7 @@
 <?php endif?>
 <?php if($_POST["login"] != "" && $_POST["password"] != "" && $_POST["email"] != ""):?>
     <?php $login = $_POST["login"]; ?>
-    <?php $password = $_POST["password"]; ?>
+    <?php $password = sha1($_POST["password"]); ?>
     <?php $name = $_POST["name"]; ?>
     <?php $email = $_POST["email"]; ?>
     <?php $about = $_POST["about"]; ?>

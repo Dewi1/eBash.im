@@ -57,7 +57,7 @@ function string_save(){
     $arr_text = get_jokes();
     $text = 0;
     foreach ($arr_text as $value) {
-        $text .= $value[1] & $value[2] & $value[3] & $value[4];
+        $text .= $value[1] . $value[2] . $value[3] . $value[4];
     }
     return $text;
 }
@@ -78,6 +78,7 @@ function file_download(&$text) {
     return $text;
 }
 function save_joke($num){
+    $myConnect = open_database_connection();
     $arr_text = get_jokes('http://bash.im/index/' . $num);
     foreach ($arr_text as $value) {
         $rating = $value[1]; $date = $value[2]; $number = $value[3];
