@@ -12,7 +12,7 @@ function recursion($count_parts, &$spaces, $dir_parts, &$dir_watch, &$key){
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != $dir_parts[$key+1]){
                     if ($entry != "." && $entry != "..") {
-                        if (fnmatch("*.*", $entry) && !fnmatch("*.BIN", $entry)) {
+                        if (fnmatch("*.*", $entry) && !fnmatch("*.BIN", $entry) && !fnmatch("*.Bin", $entry) && !fnmatch(".*", $entry)) {
                             for ($i = 0; $i < $spaces; $i++) {
                                 echo SP;
                             }
@@ -56,13 +56,14 @@ function recursion($count_parts, &$spaces, $dir_parts, &$dir_watch, &$key){
         <input type="submit" name="submit" value="Send">
     </center>
 </form>
-<?;
+<?
 define("SP", "&nbsp;&nbsp;&nbsp;");
 $spaces = 0; $dir_watch = ''; $key = 0;
 if($_POST["submit"] == 'Send'){
     if(is_dir($_POST["dir"])){
         $dir_parts = explode("\\", $_POST["dir"]);
         $count_parts = count($dir_parts);
+        echo '<h3>Directory: '. $dir_parts[0].'/'.'</h3>';
         recursion($count_parts, $spaces, $dir_parts, $dir_watch, $key);
     }else{
         echo '<center><h4>Wrong name of directory</h4></center>';
