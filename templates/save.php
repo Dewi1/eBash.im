@@ -15,8 +15,6 @@
 </form><br>
 <form >
     <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">Вернуться</a>
-        </button>
+        <a href="/index.php?page=eBash.im">Вернуться</a>
     </div>
 </form>

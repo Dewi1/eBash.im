@@ -106,8 +106,6 @@
 
 <form >
     <div style="position:fixed; top:10px; left:10px; width:120px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">На главную</a>
-        </button>
+        <a href="/index.php?page=eBash.im">На главную</a>
     </div>
 </form>

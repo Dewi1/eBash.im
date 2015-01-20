@@ -21,60 +21,38 @@
             <pre>У нас вы можете:</pre><br>
         </div>
         <div style=" width: 800px; align=center">
-            <button type="button">
-                <a href="/index.php?page=printing">Читать свежие цитаты с нашего сайта</a>
-            </button>
+            <a href="/index.php?page=printing">Читать свежие цитаты с нашего сайта</a>
         </div><br>
         <div style=" width: 800px; align=center">
-            <button type="button">
-                <a href="/index.php?page=choice">Скачать любые страницы цитат</a>
-            </button>
+            <a href="/index.php?page=choice">Скачать любые страницы цитат</a>
         </div><br>
         <div style=" width: 800px; align=center">
-            <button type="button">
-                <a href="/index.php?page=save">Скачать свежие цитаты</a>
-            </button>
+            <a href="/index.php?page=save">Скачать свежие цитаты</a>
         </div><br>
     </center>
     <?if($_SESSION['auth']=='admin'):?>
-        <form >
-            <div style="position:absolute;top:40px; right:10px; width:80px; text-align:center;">
-                <button type="button">
-                    <a href="/index.php?page=login">Выйти</a>
-                </button>
-            </div>
-        </form>
+        <div style="position:absolute;top:10px; right:10px; width:80px; text-align:center;">
+            <a href="/index.php?page=login">Выйти</a>
+        </div>
         <div style="position:fixed;top:40px; right:10px; width:80px; text-align:center;">
-            <button type="button">
-                <a href="/index.php?page=save">Профиль</a>
-            </button>
+            <a href="/index.php?page=Profile">Профиль</a>
         </div><br>
     <?endif?>
     <?if($_SESSION['auth']=='user'):?>
-        <form >
-            <div style="position:absolute;top:10px; right:10px; width:80px; text-align:center;">
-                <button type="button">
-                    <a href="/index.php?page=login">Выйти</a>
-                </button>
-            </div>
-        </form>
+        <div style="position:absolute;top:10px; right:10px; width:80px; text-align:center;">
+            <a href="/index.php?page=login">Выйти</a>
+        </div>
         <div style="position:fixed;top:40px; right:10px; width:80px; text-align:center;">
-            <button type="button">
-                <a href="/index.php?page=Profile">Профиль</a>
-            </button>
+            <a href="/index.php?page=Profile">Профиль</a>
         </div><br>
     <?endif?>
     <?if($_SESSION['auth']!='user' && $_SESSION['auth']!='admin'):?>
         <form >
             <div style="position:absolute; top:10px; right:10px; width:80px; text-align:center;">
-                <button type="button">
-                    <a href="/index.php?page=login">Войти</a>
-                </button>
+                <a href="/index.php?page=login">Войти</a>
             </div>
             <div style="position:absolute; top:40px; right:20px; width:80px; text-align:center;">
-                <button type="button">
-                    <a href="/index.php?page=register">Регистрация</a>
-                </button>
+                <a href="/index.php?page=register">Регистрация</a>
             </div>
         </form>
     <?endif?>

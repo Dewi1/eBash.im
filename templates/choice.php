@@ -17,13 +17,13 @@
         <center><br>
         <? $arr_max = max_page();?>
         <?php $first_num = $_POST['first']; $last_num = $_POST['last'];?>
-            <?php $text = save_all($first_num, $last_num);?>
+            <?php //$text = save_all($first_num, $last_num);?>
         <?php if ($last_num >= $first_num):?>
-            В папку "saves" были сохранены файлы:<br><br>
+            В базу данных были сохранены страницы цитат:<br><br>
             <?php for($num=$first_num; $num<=$last_num; $num++):?>
                 <?php if  ($num <= $arr_max[1]):?>
                     <?php $result_joke = save_joke($num);?>
-                    <?php echo 'Bash_'.$num.'.txt';?><br>
+                    <?php echo 'Сраница_'.$num;?><br>
                 <?php else:?>
                     Файл: <?php echo 'Bash_'.$num.'.txt';?>, не был сохранен.<br>
                 <?php endif?>
@@ -43,8 +43,6 @@
 <?php endif ?>
 <form >
     <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">Вернуться</a>
-        </button>
+        <a href="/index.php?page=eBash.im">Вернуться</a>
     </div>
 </form>

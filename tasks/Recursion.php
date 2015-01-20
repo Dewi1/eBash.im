@@ -6,7 +6,7 @@
 <?php
 function recursion($count_parts, &$spaces, $dir_parts, &$dir_watch, &$key){
     $dir = $dir_parts[$key];
-    $dir_watch .= (string)$dir . '\\';
+    $dir_watch .= $dir . '\\';
     if(is_dir($dir_watch)){
         if ($handle = opendir("$dir_watch")) {
             while (false !== ($entry = readdir($handle))) {
@@ -43,7 +43,7 @@ function recursion($count_parts, &$spaces, $dir_parts, &$dir_watch, &$key){
     }
 }
     /*$new_dir = $dir . "/" . $entry;
-    if (@filetype($new_dir) == "dir") {
+    if (is_dir(filetype($new_dir) == "dir")) {
         $dir = $new_dir;
         $spaces++;
         recursion($dir, $spaces, $dir_parts);*/
@@ -64,7 +64,7 @@ if($_POST["submit"] == 'Send'){
         $dir_parts = explode("\\", $_POST["dir"]);
         $count_parts = count($dir_parts);
         echo '<h3>Directory: '. $dir_parts[0].'/'.'</h3>';
-        recursion($count_parts, $spaces, $dir_parts, $dir_watch, $key);
+        recursion($count_parts, $spaces, $dir_parts, $dir_watch, $key);//рекурсия должна принимать только папку и кол-во пробелов
     }else{
         echo '<center><h4>Wrong name of directory</h4></center>';
     }

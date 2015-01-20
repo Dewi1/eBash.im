@@ -7,9 +7,7 @@
             <pre>где вы можете:</pre><br>
         </div>
         <div style=" width: 800px; align=center">
-            <button type="button">
-                <a href="/index.php?page=Profile_saves">Просмотреть скачанные ранее цитаты</a>
-            </button>
+            <a href="/index.php?page=Profile_saves">Просмотреть скачанные ранее цитаты</a>
         </div><br>
     </center>
 <?php else: ?>
@@ -19,8 +17,6 @@
 <?php endif ?>
 <form >
     <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">Вернуться</a>
-        </button>
+        <a href="/index.php?page=eBash.im">Вернуться</a>
     </div>
 </form>

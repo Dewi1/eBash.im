@@ -1,6 +1,6 @@
 <?php $title = 'Profile_saves'; ?>
 <?php if($_SESSION['auth']=='admin' || $_SESSION['auth']=='user'):?>
-    <?php $user_pages = qr_result_users ();?>
+    <?php $user_pages = qr_result_users();?>
     <center>
         <h3>Сохранённые прежде страницы:</h3>
         <?php $top = 12;?>
@@ -40,15 +40,11 @@
 <?php endif ?>
 <form >
     <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=Profile">Вернуться</a>
-        </button>
+        <a href="/index.php?page=Profile">Вернуться</a>
     </div>
 </form>
 <form >
     <div style="position:fixed;top:40px; right:4px; width:100px; text-align:center;">
-        <button type="button">
-            <a href="/index.php?page=eBash.im">На главную</a>
-        </button>
+        <a href="/index.php?page=eBash.im">На главную</a>
     </div>
 </form>
