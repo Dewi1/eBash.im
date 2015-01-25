@@ -24,27 +24,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users`
+-- Структура таблицы `user_page`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` text NOT NULL,
-  `about` text NOT NULL,
-  `sex` text NOT NULL,
-  `age` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+CREATE TABLE IF NOT EXISTS `user_page` (
+  `page_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `users`
+-- Дамп данных таблицы `user_page`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `name`, `email`, `about`, `sex`, `age`) VALUES
-(10, '123', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '123', '123', '123', 'male', '2013-01-01');
+INSERT INTO `user_page` (`page_id`, `user_id`) VALUES
+(1, 10),
+(2, 10),
+(56, 10);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
