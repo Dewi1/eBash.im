@@ -1,20 +1,11 @@
 <?php $title = 'Save'; ?>
 <form  method="post" action="/index.php?page=save">
-    <?php if($_SESSION['auth']=='admin' || $_SESSION['auth']=='user'):?>
-        <center><br>
-            <div style=" width: 800px; align=center">
-                <a href="/index.php?page=save_file"><h3>Сохранить главную страницу</h3></a>
-            </div>
-            <br><h3>Документ будет сохранен как "Bash.txt".</h3>
-        </center><br>
-    <?php else: ?>
-        <center><br>
-            <h3>Сперва вы должны авторизироваться на сайте!</h3>
-        </center>
-    <?php endif ?>
+    <center><br>
+        <div style=" border-radius:6px; background:#EEE9E9;border: solid 1px black; width: 450px; font-size: 22px" align="center">
+            <a href="/index.php?page=save_file"><h3>Сохранить главную страницу</h3></a>
+        </div><br>
+        <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 18px" align="center">
+            <h3>Документ будет сохранен как "Bash.txt".</h3>
+        </div>
+    </center><br>
 </form><br>
-<form >
-    <div style="position:fixed;top:10px; right:10px; width:80px; text-align:center;">
-        <a href="/index.php?page=eBash.im">Вернуться</a>
-    </div>
-</form>

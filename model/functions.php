@@ -21,14 +21,23 @@ function file_save($arr_text, $text = 'saves/Bash.txt')
     foreach ($arr_text as $value) {
         $current = "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
             ."-------------------------------------------------------------------------------------------------\r\n";
-        $current = file_change($current);
+        $current = prepare_joke($current);
         fwrite($f, $current);
     }
     fclose($f);
 
     return $current;
 }
-function file_change(&$current){
+function combine_jokes_to_string(){
+    //сделать функцию - массив шуток переводит в строку и использовать вместо string_save и юзать в file_save
+    $arr_text = get_jokes();
+    $text = 0;
+    foreach ($arr_text as $value) {
+        $text .= $value[1] . $value[2] . $value[3] . $value[4];
+    }
+    return $text;
+}
+function prepare_joke($current){
     $patterns[0] = "/<br\/?>/i";
     $patterns[1] = "/<br\s\/?>/i";
     $patterns[2] = "/&quot;/i";
@@ -38,11 +47,17 @@ function file_change(&$current){
     $replacements[3] = "\r\n";
     $replacements[2] = "\"";
     $replacements[1] = "<";
-    $replacements[0] = ">";;
+    $replacements[0] = ">";
     $current = preg_replace($patterns, $replacements, $current);
     return $current;
 }
-function save_all(&$first_num, &$last_num)
+function prepare_number($number){
+    $pattern = "/#/";
+    $replacement = "";
+    $number = preg_replace($pattern, $replacement, $number);
+    return $number;
+}
+/*function save_all($first_num, $last_num)
 {
     for($num=$first_num; $num<=$last_num; $num++) {
         $arr_max = max_page();
@@ -52,47 +67,39 @@ function save_all(&$first_num, &$last_num)
         }
     }
     return $num;
-}
-function string_save(){
-    $arr_text = get_jokes();
-    $text = 0;
-    foreach ($arr_text as $value) {
-        $text .= $value[1] . $value[2] . $value[3] . $value[4];
-    }
-    return $text;
-}
-function file_download(&$text) {
-    if (ob_get_level()) {
-        ob_end_clean();
-    }
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="Bash.txt"');
-    header('Content-Transfer-Encoding: binary');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . strlen($text));
-    echo $text;
-
-    return $text;
-}
-function save_joke($num){
-    $myConnect = open_database_connection();
-    $arr_text = get_jokes('http://bash.im/index/' . $num);
+}*/
+function save_page($num){
+    $arr_text = get_jokes('http://bash.im/index/'. $num);
     foreach ($arr_text as $value) {
         $rating = $value[1]; $date = $value[2]; $number = $value[3];
+        $number = prepare_number($number);
         $value[4]=iconv("windows-1251","utf-8",$value[4]);
         $current = $value[4]; $page_id = $num;
-        $current = file_change($current);
+        $current = prepare_joke($current);
         $joke = $current;
         $result_joke = add_joke($number, $date, $rating, $joke, $page_id);
     }
     $number_page = $num;
-    $page_id = $num;
-    $users = user_id();
-    $user_id = $users[0][0];
+    $user_id = $_SESSION['user_id'];
     $result_page = add_page($number_page);
-    $result_user_page = add_user_page($page_id, $user_id);
+    $result_user_page = add_user_page($num, $user_id);
     return $result_joke;
+}
+function file_search(){
+    $file_pages = array('choice' => 'choice', 'save' => 'save', 'profile' => 'Profile', 'profile_saves' => 'Profile_saves',
+    'save_file' => 'save_file', 'title' => 'eBash.im', 'printing' => 'Printing', 'login' => 'login', 'register' => 'register');
+    $file = array_search($_SESSION['page'], $file_pages);
+    return $file;
+}
+function includes(){
+    $file = file_search();
+    ob_start();
+    include 'templates/'. $file .'.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
+}
+function headers(){
+    header('Content-Type: text/html; charset=utf-8');
+    setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russian');
+    $myConnect = open_database_connection();
 }

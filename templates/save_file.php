@@ -1,3 +1,3 @@
 <?php $title = 'save_file';
-$text = string_save();
+$text = combine_jokes_to_string();
 $text = file_download($text);

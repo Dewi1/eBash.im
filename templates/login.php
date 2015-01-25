@@ -1,43 +1,31 @@
 <?php session_start(); $title = "Log-in"; ?>
 <center>
+    <div style=" width: 808px;" align="center">
+        <font color="red" face="Zapf Chancery, cursive"><h1>Вход</h1></font>
+    </div>
     <form method='POST' action='/index.php?page=login'>
         <?php if($_POST['login'] == 'admin' && $_POST['pass'] == 'admin'):?>
             <?php $_SESSION['auth'] = 'admin'; ?>
         <?php endif?>
-        <?php $login = $_POST["login"];?>
-        <?php $password = sha1($_POST["pass"]);?>
-        <?php $users = login_in($password, $login)?>
         <?php if($_SESSION['auth'] == 'admin' || $_SESSION['auth'] == 'user'):?>
-            <div style="position:absolute; top:40px; left:10px; width:120px; text-align:center;">
-                <input name='submit' type='submit' value='Выход'>
+            <div style="width:120px; text-align:center;">
+                <input name='submit1' type='submit' value='Выход'>
             </div>
         <?php endif?>
         <?php if($_SESSION['auth'] != 'user' && $_SESSION['auth'] != 'admin'):?>
-            <br><br><br><br>
-            <input type="text" name="login" style="width:140px; text-align:center;">
+            <input title="Для ввода разрешены: цифры и латинские символы." type="text" name="login" style="width:140px; text-align:center;">
             <br>
-            <input type="password" name="pass" style="width:140px; text-align:center;">
+            <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="pass" style="width:140px; text-align:center;">
             <br><br>
-            <input type="submit" value="Вход" style="width:80px; text-align:center;">
+            <input type="submit" name='submit2' value="Вход" style="width:80px; text-align:center;">
         <?php endif?>
     </form>
     <?if($_SESSION['auth'] == 'user'):?>
         <br><br>
-        <h2>Вы авторизированы как USER</h2>
+        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как USER</h2></font>
     <?endif?>
     <?if($_SESSION['auth'] == 'admin'):?>
         <br><br>
-        <h2>Вы авторизированы как ADMIN</h2>
-    <?endif?>
-
-    <?if($_POST["submit"]=='Выход'):?>
-        <? $_SESSION['auth']=null; ?>
-        <br><br>
-        <h2>Вы вышли из системы!</h2>
+        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как ADMIN</h2></font>
     <?endif?>
 </center>
-<form >
-    <div style="position:absolute; top:10px; left:10px; width:120px; text-align:center;">
-        <a href="/index.php?page=eBash.im">На главную</a>
-    </div>
-</form>

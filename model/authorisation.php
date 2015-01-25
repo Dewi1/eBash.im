@@ -1,23 +1,16 @@
-<?php session_start();
+<?php
 function login_in($password, $login) {
     $qr_result_users = mysql_query("select * from users where login='$login'");
-    $users = array();
-    while ($users = mysql_fetch_array($qr_result_users)) {
-        if ($login == $users["login"] && $password == $users["password"]) {
-            $_SESSION['auth'] = 'user';
-            $_SESSION['user'] = $users["login"];
-        }else{
-            return false;
-        }
+    $users = mysql_fetch_array($qr_result_users);
+    if ($password == $users["password"]) {
+        $_SESSION['auth'] = 'user';
+        $_SESSION['user'] = $users["login"];
+        $_SESSION['user_id'] = $users["id"];
+    }else{
+        return false;
     }
     return $users;
 }
 function isAuthorized() {
     return $_SESSION['auth'] == true;
 }
-/*function sha1($get_pass){
-    $pass = $get_pass;
-
-    return $pass;
-}*/
-//сохранять пароль в хеш. пропускачть через функцию sha1() $pass = '123'; echo sha1($pass);

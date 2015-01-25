@@ -5,7 +5,6 @@ function open_database_connection()
     $myConnect = mysql_connect($db_host, $db_username, $db_password);
     mysql_select_db($db_name,$myConnect);
     mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
-    //mysql_close($myConnect)
     return $myConnect;
 }
 function qr_result_jokes($page){
@@ -17,8 +16,8 @@ function qr_result_jokes($page){
     return $jokes;
 }
 function qr_result_users (){
-    $users = user_id();
-    $qr_user_page = mysql_query("select page_id from user_page where user_id = ".$users[0][0]);
+    $users = $_SESSION['user_id'];
+    $qr_user_page = mysql_query("select page_id from user_page where user_id = ".$users);
     $user_pages = array();
     while ($user_page = mysql_fetch_array($qr_user_page)) {
         $user_pages[] = $user_page;
@@ -33,18 +32,7 @@ function add_page($number_page) {
     $result_page = mysql_query("INSERT INTO page (number_page) VALUES($number_page)");
     return $result_page;
 }
-function add_user_page($page_id, $user_id) {
-    $result_user_page = mysql_query("INSERT INTO user_page (page_id, user_id) VALUES($page_id, $user_id)");
+function add_user_page($num, $user_id) {
+    $result_user_page = mysql_query("INSERT INTO user_page (page_id, user_id) VALUES($num, $user_id)");
     return $result_user_page;
-}
-function user_id(){
-    $user_id = mysql_query("select id from users where login = ".$_SESSION['user']);
-    if (!$user_id) {
-        die('Неверный запрос: ' . mysql_error());
-    }
-    $users = array();
-    while ($user = mysql_fetch_array($user_id)) {
-        $users[] = $user;
-    }
-    return $users;
 }

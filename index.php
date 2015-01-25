@@ -2,16 +2,22 @@
 session_start();
 define('DS', DIRECTORY_SEPARATOR);
 require 'model/database.php';
-
 require 'model/authorisation.php';
 require 'model/registration.php';
 require 'model/functions.php';
+require 'model/check.php';
 require 'controllers.php';
 //error_reporting(E_ALL);
 
 $page = null;
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
+    $_SESSION['page'] = $page;
+}
+$private_pages = array(1 => 'choice', 'save', 'Profile', 'Profile_saves', 'save_file');
+$key = array_search($page, $private_pages);
+if ($key != 0 && $_SESSION['auth'] == false){
+    header( 'Refresh: 0; url=http://bash.zz.vc/index.php?page=login' );
 }
 switch ($page) {
     case null:
@@ -21,7 +27,7 @@ switch ($page) {
     case "choice":
         html_choice();
         break;
-    case "printing":
+    case "Printing":
         html_printer();
         break;
     case "save":
@@ -42,13 +48,7 @@ switch ($page) {
     case "Profile_saves":
         profile_saves();
         break;
-
     default:
-        echo '<html><body><h1>Page Not Found</h1></body></html>';
+        echo '<html><body><h1>404: Page not found!</h1></body></html>';
         break;
 }
-//сделать форму с какой до какой страницы..
-//для каждой страницы своё имя. вывести имена созданных файлов (сколько файлов найдено, сколько - нет)
-//и кнопку скачать главную страницу (как создать и скачать файл на пхп?). ограничитель на страницу
-//прочитать про ресурсы b функции
-// сделать страницу скачивания
