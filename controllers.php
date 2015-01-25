@@ -34,6 +34,54 @@ function html_choice() {
                 echo 'Таких страниц не существует.';
             }
         echo '</center>';
+
+
+        // todo ничего не выводи в контроллере, т.е. не использовать тут функцию echo
+        // todo вместо этого передавай в шаблон информацию, например
+
+        /*
+        $saved = false;
+        $savedPages = array();
+        $notSavedPages = array();
+
+        $maxPageNumber = max_page();
+        $first_num = $_POST['first'];
+        $last_num = $_POST['last'];
+
+        if ($last_num >= $first_num){
+            $saved = true;
+            for ($num = $first_num; $num <= $last_num; $num++) {
+                if ($num <= $maxPageNumber) {
+                    save_page($num);
+                    $savedPages[] = $num;
+                } else {
+                    $notSavedPages[] = $num;
+                }
+            }
+        }
+        */
+
+        //todo а уже в шаблоне выводишь все как нужно:
+        /*
+
+        <center><br>
+
+            <?php if ($saved): ?>
+                <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 16px" align="center">
+                    В базу данных были сохранены страницы цитат: <?php implode(', ', $savedPages); ?>
+                    <br><br>
+                    Не сохраненные страницы: <?php implode(', ', $notSavedPages); ?>
+                </div>
+            <?php else: ?>
+                Файлы не были сохранены.
+            <?php endif; ?>
+
+        </center>
+        */
+
+        // todo соответственно функцию includes() нужно вызывать в конце метода
+
+        // todo переделай так для всех функций контроллера
     }
 }
 function login() {

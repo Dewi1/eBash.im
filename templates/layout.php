@@ -23,7 +23,7 @@
         <div style="position:fixed; border: solid 1px black; border-radius:6px; background:#CDC5BF; top:27px; right:180px; width:90px; text-align:center;">
             <a href="/index.php?page=eBash.im">На главную</a>
         </div>
-        <?php if($_SESSION['auth'] == false):?>
+        <?php if($_SESSION['auth'] == false): //todo следай функцию is_authenticated(), которая будет проверть авторизован пользователь или нет и не используй суперглобальные массивы в шаблонах (во всех шаблонах не использовать $_GET, $_POST, $_SESSION) ?>
             <div style="position:fixed; border: solid 1px black; border-radius:6px; background:#CDC5BF; top:27px; right:400px; width:70px; text-align:center;">
                 <a href="/index.php?page=login">Войти</a>
             </div>

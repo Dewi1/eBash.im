@@ -14,9 +14,11 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
     $_SESSION['page'] = $page;
 }
+// todo индекс 1 не нужен, читай что возвращает функция array_search
 $private_pages = array(1 => 'choice', 'save', 'Profile', 'Profile_saves', 'save_file');
 $key = array_search($page, $private_pages);
 if ($key != 0 && $_SESSION['auth'] == false){
+    // todo не использовать абсолютный адрес
     header( 'Refresh: 0; url=http://bash.zz.vc/index.php?page=login' );
 }
 switch ($page) {

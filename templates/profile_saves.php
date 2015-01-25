@@ -1,5 +1,5 @@
 <?php $title = 'Profile_saves'; ?>
-<?php $user_pages = qr_result_users();?>
+<?php $user_pages = qr_result_users(); //todo передавай данные из контроллера ?>
 <center>
     <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 22px" align="center">
         <h3>Сохранённые прежде страницы:</h3>
@@ -13,9 +13,9 @@
             </div>
         </form>
         <?php $top = $top+25;?>
-        <?php if($_POST["read"] == $value[0]):?>
+        <?php if($_POST["read"] == $value[0]): //todo передавай данные из контроллера ?>
             <?php $page = $value[0];?>
-            <?php $jokes = qr_result_jokes($page);?>
+            <?php $jokes = qr_result_jokes($page); //todo передавай данные из контроллера?>
             <?php foreach($jokes as $joke):?>
                 <center>
                     <div style=" width: 808px; background: #CDC5BF; padding: 2px; font-size: 14px" align="center">

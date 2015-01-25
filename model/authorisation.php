@@ -12,5 +12,5 @@ function login_in($password, $login) {
     return $users;
 }
 function isAuthorized() {
-    return $_SESSION['auth'] == true;
+    return $_SESSION['auth'] == true; //todo не правильно, там не boolean хранится, посмотри на 6 строку этого файла
 }

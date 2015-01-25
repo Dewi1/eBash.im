@@ -13,7 +13,8 @@ function is_login($login_check) {
         return true;
     }
 }
-function is_pass($pass_check) {
+
+function is_pass($pass_check) { //todo удалить, она такая же как is_login
     if (! preg_match( '~^[A-Za-z0-9_\-]*$~i', $pass_check)) {
         return false;
     } else {

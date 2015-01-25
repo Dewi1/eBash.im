@@ -16,6 +16,8 @@
                 </div>
             <?php endif?>
         <?php endif?>
+        <?php /* todo строки 4-18: лучше использовать elseif, а еще лучше определить в контроллере имя пользователя
+                 todo и передать его в шаблон, т.к. в трех случаях дублируются три строки html кода*/?>
         <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 22px" align="center">
             <pre>Этот сайт посвящен сайту Bash.im</pre>
             <pre>У нас вы можете:</pre>

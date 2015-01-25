@@ -1,5 +1,5 @@
-<?php $title = 'Printing'; ?>
-<?php $arr_text = get_jokes();?>
+<?php $title = 'Printing'; // todo зачем эта переменная? ?>
+<?php $arr_text = get_jokes(); // todo передать список шуток из контроллера, тем более они там уже выбраны, зачем их тогда дважды из бд выбирать ?>
 <?php foreach ($arr_text as $value):?>
     <center>
         <div style=" width: 808px; background: #CDC5BF; padding: 2px; font-size: 14px" align="center">

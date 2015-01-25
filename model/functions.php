@@ -13,7 +13,7 @@ function max_page(){
     $regexp = '/max="([\d]*)"/i';
     preg_match($regexp, $html, $arr_max);
 
-    return $arr_max;
+    return $arr_max;//todo функция должна возвращать максимальный номер страницы, а не массив
 }
 function file_save($arr_text, $text = 'saves/Bash.txt')
 {
@@ -29,6 +29,7 @@ function file_save($arr_text, $text = 'saves/Bash.txt')
     return $current;
 }
 function combine_jokes_to_string(){
+    //todo коммет ниже не выполнен
     //сделать функцию - массив шуток переводит в строку и использовать вместо string_save и юзать в file_save
     $arr_text = get_jokes();
     $text = 0;
@@ -52,6 +53,7 @@ function prepare_joke($current){
     return $current;
 }
 function prepare_number($number){
+    //todo решетка всегда первый символ строки, для удаления первого символа используй substr функцию
     $pattern = "/#/";
     $replacement = "";
     $number = preg_replace($pattern, $replacement, $number);
@@ -85,14 +87,14 @@ function save_page($num){
     $result_user_page = add_user_page($num, $user_id);
     return $result_joke;
 }
-function file_search(){
+function file_search(){ //todo удалить функцию
     $file_pages = array('choice' => 'choice', 'save' => 'save', 'profile' => 'Profile', 'profile_saves' => 'Profile_saves',
     'save_file' => 'save_file', 'title' => 'eBash.im', 'printing' => 'Printing', 'login' => 'login', 'register' => 'register');
     $file = array_search($_SESSION['page'], $file_pages);
     return $file;
 }
 function includes(){
-    $file = file_search();
+    $file = file_search(); //todo передавай название шаблона из контроллера
     ob_start();
     include 'templates/'. $file .'.php';
     $content = ob_get_clean();
@@ -101,5 +103,5 @@ function includes(){
 function headers(){
     header('Content-Type: text/html; charset=utf-8');
     setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russian');
-    $myConnect = open_database_connection();
+    $myConnect = open_database_connection();// todo не относится к к хедерам, можешь перенести в index.php
 }
