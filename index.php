@@ -8,16 +8,17 @@ require 'model/functions.php';
 require 'model/check.php';
 require 'controllers.php';
 //error_reporting(E_ALL);
+open_database_connection();
 
 $page = null;
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
     $_SESSION['page'] = $page;
 }
-$private_pages = array(1 => 'choice', 'save', 'Profile', 'Profile_saves', 'save_file');
+$private_pages = array('choice', 'save', 'Profile', 'Profile_saves', 'save_file');
 $key = array_search($page, $private_pages);
-if ($key != 0 && $_SESSION['auth'] == false){
-    header( 'Refresh: 0; url=http://bash.zz.vc/index.php?page=login' );
+if ($key !== false && !isAuthorized()){
+    header( 'Refresh: 0; url=/index.php?page=login' );
 }
 switch ($page) {
     case null:

@@ -1,69 +1,64 @@
 <?php
 headers();
 function html_title() {
-    includes();
+    $user_name = $_SESSION['user'];
+    includes($file = 'title');
 }
 function html_printer() {
-    includes();
+    includes($file = 'printing');
 }
 function html_parser() {
     $arr_text = get_jokes();
-    includes();
+    includes($file = 'save');
 }
 function html_choice() {
-    includes();
-    if($_POST['save'] == "Сохранить"){
-        echo '<center><br>';
-            $arr_max = max_page();
-            $first_num = $_POST['first']; $last_num = $_POST['last'];
-            if ($last_num >= $first_num){
-                echo '<div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 16px" align="center">';
-                echo 'В базу данных были сохранены страницы цитат:<br><br>';
-                for ($num = $first_num; $num <= $last_num; $num++) {
-                    if ($num <= $arr_max[1]) {
-                        $result_joke = save_page($num);
-                        echo 'Страница_' . $num . '<br>';
-                    } else {
-                        echo 'Страница_' . $num . ' не была сохранена. <br></div>';
-                    }
+    $saved = false;
+    $savedPages = array();
+    $notSavedPages = array();
+    $maxPageNumber = max_page();
+    $first_num = $_POST['first'];
+    $last_num = $_POST['last'];
+    if($_POST['save'] == "Сохранить") {
+        if ($last_num >= $first_num) {
+            $saved = true;
+            for ($num = $first_num; $num <= $last_num; $num++) {
+                if ($num <= $maxPageNumber) {
+                    save_page($num);
+                    $savedPages[] = $num;
+                } else {
+                    $notSavedPages[] = $num;
                 }
-            }else {
-                echo 'Файлы не были сохранены.';
             }
-            if  ($num > $arr_max[1]){
-                echo 'Таких страниц не существует.';
-            }
-        echo '</center>';
+        }
     }
+    includes($file = 'choice');
 }
 function login() {
-    includes();
-    if($_POST["submit2"]=='Вход') {
-        $login_check = $_POST["login"];
-        if (is_login($login_check)) {
-            $login = $_POST["login"];
+    if($_POST["login"]=='Вход') {
+        $login_check = $_POST["username"];
+        if (is_login_or_password($login_check)) {
+            $login = $_POST["username"];
         } else {
-            echo '<center><h2>Логин введен не корректно!<h2></center>';
             $login = false;
         }
-        $pass_check = $_POST["pass"];
-        if (is_pass($pass_check)) {
-            $password = sha1($_POST["pass"]);
+        $pass_check = $_POST["password"];
+        if (is_login_or_password($pass_check)) {
+            $password = sha1($_POST["password"]);
         } else {
-            echo '<center><h2>Пароль введен не корректно!<h2></center>';
             $password = false;
         }
-        $users = login_in($password, $login);
-        header( 'Refresh: 0; url=http://bash.zz.vc/index.php?page=login' );
+        login_in($password, $login);
+        $is_authorised = true;
+        header( 'Refresh: 0; url=/index.php?page=login' );
     }
-    if($_POST["submit1"]=='Выход') {
+    if($_POST["logout"]=='Выход') {
         $_SESSION['auth'] = null;
-        echo '<br><br><center><h2>Вы вышли из системы!</h2></center>';
-        header( 'Refresh: 0; url=http://bash.zz.vc/index.php?page=login' );
+        header( 'Refresh: 0; url=/index.php?page=login' );
     }
+    includes($file = 'login');
 }
 function register() {
-    includes();
+    includes($file = 'register');
     if($_POST["sex"]=="male"){
         $sex = "male";
     }
@@ -72,31 +67,27 @@ function register() {
     }
     if($_POST["submit"] == "Сохранить") {
         $login_check = $_POST["login"];
-        if (is_login($login_check)) {
+        if (is_login_or_password($login_check)) {
             $login = $_POST["login"];
         } else {
-            echo '<center><h2>Логин введен не корректно!<h2></center>';
             $login = false;
         }
         $pass_check = $_POST["password"];
-        if (is_pass($pass_check)) {
+        if (is_login_or_password($pass_check)) {
             $password = sha1($_POST["password"]);
         } else {
-            echo '<center><h2>Пароль введен не корректно!<h2></center>';
             $password = false;
         }
         $name_check = $_POST["name"];
         if (is_name($name_check)) {
             $name = $_POST["name"];
         } else {
-            echo '<center><h2>Имя введено не корректно!<h2></center>';
             $name = false;
         }
         $email_check = $_POST["email"];
         if (is_email($email_check)) {
             $email = $_POST["email"];
         } else {
-            echo '<center><h2>Email введен не корректно!<h2></center>';
             $email = false;
         }
         $about = convert_uuencode($_POST["about"]); //convert_uudecode для конвертации в нормальный вид
@@ -107,29 +98,29 @@ function register() {
     $year = $_POST["year"];
     $date = date('Y-m-d', mktime(0, 0, 0, $month, $day, $year));
     echo '<center>';
-        if($_POST["submit"] == "Сохранить" && $_POST["login"] == "") {
-            echo '<center><h2>Поле "Логин" не должно быть пустым!<h2></center>';
-        }
-        if($_POST["submit"] == "Сохранить" && $_POST["password"] == "") {
-            echo '<center><h2>Поле "Пароль" не должно быть пустым!<h2></center>';
-        }
-        if($_POST["submit"] == "Сохранить" && $_POST["email"] == "") {
-            echo '<center><h2>Поле "E-mail" не должно быть пустым!<h2></center>';
-        }
         if($_POST["submit"] == "Сохранить" && $_POST["password"] != "" && $_POST["login"] != "" && $_POST["email"] != ""&& $password != false && $login != false && $name != false && $email != false) {
-            echo '<h2>Поздравляем! Вы успешно зарегестрировались на нашем сайте!</h2>';
-            $register = registration($login, $password, $name, $email, $about, $sex, $date);
+            $register = true;
+            registration($login, $password, $name, $email, $about, $sex, $date);
         }
     echo '</center>';
 }
 function save_file() {
-    include 'templates/save_file.php';
+    $text = combine_jokes_to_string();
+    $text = file_download($text);
 }
 function profile() {
-    includes();
+    $user_name = $_SESSION['user'];
+    includes($file = 'profile');
 }
 function profile_saves() {
-    includes();
+    $user_pages = qr_result_users();
+    $top = 92;
+    if($_POST["read"] != false) {
+        $page = $_POST["read"];
+        $jokes = qr_result_jokes($page);
+        $printing = true;
+    }
+    includes($file = 'profile_saves');
 }
 function file_download($text) {
     if (ob_get_level()) {

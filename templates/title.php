@@ -1,20 +1,14 @@
 <?php $title = 'eBash.im'; ?>
 <form  method="post" action="/index.php?page=save">
     <center>
-        <?if($_SESSION['auth']=='admin'):?>
-            <div style=" width: 808px;" align="center">
-                <font color="red" face="Zapf Chancery, cursive"><h1>Здравствуй, админ!</h1></font>
+        <?php if(isAuthorized()):?>
+            <div style="width: 808px;" align="center">
+                <font color="red" face="Zapf Chancery, cursive"><h1>Здравствуйте, <?php echo $user_name;?>!</h1></font>
             </div>
         <?php else:?>
-            <?if($_SESSION['auth']=='user'):?>
-                <div style="width: 808px;" align="center">
-                    <font color="red" face="Zapf Chancery, cursive"><h1>Здравствуйте, <?php echo $_SESSION['user'];?>!</h1></font>
-                </div>
-            <?php else:?>
-                <div style=" width: 808px;" align="center">
-                    <font color="red" face="Zapf Chancery, cursive"><h1>Здравствуйте!</h1></font>
-                </div>
-            <?php endif?>
+            <div style=" width: 808px;" align="center">
+                <font color="red" face="Zapf Chancery, cursive"><h1>Здравствуйте, гость!</h1></font>
+            </div>
         <?php endif?>
         <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 22px" align="center">
             <pre>Этот сайт посвящен сайту Bash.im</pre>

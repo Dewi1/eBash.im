@@ -1,5 +1,4 @@
 <?php $title = 'Printing'; ?>
-<?php $arr_text = get_jokes();?>
 <?php foreach ($arr_text as $value):?>
     <center>
         <div style=" width: 808px; background: #CDC5BF; padding: 2px; font-size: 14px" align="center">

@@ -4,28 +4,28 @@
         <font color="red" face="Zapf Chancery, cursive"><h1>Вход</h1></font>
     </div>
     <form method='POST' action='/index.php?page=login'>
-        <?php if($_POST['login'] == 'admin' && $_POST['pass'] == 'admin'):?>
-            <?php $_SESSION['auth'] = 'admin'; ?>
-        <?php endif?>
-        <?php if($_SESSION['auth'] == 'admin' || $_SESSION['auth'] == 'user'):?>
-            <div style="width:120px; text-align:center;">
-                <input name='submit1' type='submit' value='Выход'>
-            </div>
-        <?php endif?>
-        <?php if($_SESSION['auth'] != 'user' && $_SESSION['auth'] != 'admin'):?>
-            <input title="Для ввода разрешены: цифры и латинские символы." type="text" name="login" style="width:140px; text-align:center;">
+        <?php if (!isAuthorized()): ?>
+            <input title="Для ввода разрешены: цифры и латинские символы." type="text" name="username" style="width:140px; text-align:center;">
             <br>
-            <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="pass" style="width:140px; text-align:center;">
+            <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="password" style="width:140px; text-align:center;">
             <br><br>
-            <input type="submit" name='submit2' value="Вход" style="width:80px; text-align:center;">
-        <?php endif?>
+            <input type="submit" name='login' value="Вход" style="width:80px; text-align:center;">
+        <?php else:?>
+            <div style="width:120px; text-align:center;">
+                <input name='logout' type='submit' value='Выход'>
+            </div>
+        <?php endif ?>
     </form>
-    <?if($_SESSION['auth'] == 'user'):?>
-        <br><br>
-        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как USER</h2></font>
-    <?endif?>
-    <?if($_SESSION['auth'] == 'admin'):?>
-        <br><br>
-        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как ADMIN</h2></font>
-    <?endif?>
+    <?php if (isAuthorized()): ?>
+        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как: <?php echo $login;?></h2></font>
+    <?php else: ?>
+        <font color="red" face="Zapf Chancery, cursive"><h2>Вы не авторизированы</h2></font>
+    <?php endif; ?>
+    <?php if ($is_authorised): ?>
+        <?php if (!$login): ?>
+            <h2>Логин введен не корректно!</h2>
+        <?php elseif(!$password): ?>
+            <h2>Пароль введен не корректно!</h2>
+        <?php endif; ?>
+    <?php endif; ?>
 </center>

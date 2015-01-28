@@ -12,30 +12,19 @@ function max_page(){
     $html = file_get_contents('http://bash.im/index/1');
     $regexp = '/max="([\d]*)"/i';
     preg_match($regexp, $html, $arr_max);
+    $max_page = $arr_max[1];
 
-    return $arr_max;
-}
-function file_save($arr_text, $text = 'saves/Bash.txt')
-{
-    $f = fopen($text, 'a');
-    foreach ($arr_text as $value) {
-        $current = "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
-            ."-------------------------------------------------------------------------------------------------\r\n";
-        $current = prepare_joke($current);
-        fwrite($f, $current);
-    }
-    fclose($f);
-
-    return $current;
+    return $max_page;
 }
 function combine_jokes_to_string(){
-    //сделать функцию - массив шуток переводит в строку и использовать вместо string_save и юзать в file_save
     $arr_text = get_jokes();
-    $text = 0;
+    $current = '';
     foreach ($arr_text as $value) {
-        $text .= $value[1] . $value[2] . $value[3] . $value[4];
+        $current .= "Rating: $value[1]        Date: $value[2]         Number: $value[3]\r\n\r\n$value[4]\r\n\r\n"
+            ."-------------------------------------------------------------------------------------------------\r\n";
+        $current = prepare_joke($current);
     }
-    return $text;
+    return $current;
 }
 function prepare_joke($current){
     $patterns[0] = "/<br\/?>/i";
@@ -52,11 +41,14 @@ function prepare_joke($current){
     return $current;
 }
 function prepare_number($number){
-    $pattern = "/#/";
-    $replacement = "";
-    $number = preg_replace($pattern, $replacement, $number);
+    $number = substr($number, 1);
     return $number;
 }
+/*function file_save($text = 'saves/Bash.txt')
+{
+    $string = combine_jokes_to_string();
+    file_put_contents($text, $string);
+}*/
 /*function save_all($first_num, $last_num)
 {
     for($num=$first_num; $num<=$last_num; $num++) {
@@ -85,14 +77,8 @@ function save_page($num){
     $result_user_page = add_user_page($num, $user_id);
     return $result_joke;
 }
-function file_search(){
-    $file_pages = array('choice' => 'choice', 'save' => 'save', 'profile' => 'Profile', 'profile_saves' => 'Profile_saves',
-    'save_file' => 'save_file', 'title' => 'eBash.im', 'printing' => 'Printing', 'login' => 'login', 'register' => 'register');
-    $file = array_search($_SESSION['page'], $file_pages);
-    return $file;
-}
-function includes(){
-    $file = file_search();
+function includes($file = ''){
+    $arr_text = get_jokes();
     ob_start();
     include 'templates/'. $file .'.php';
     $content = ob_get_clean();
@@ -101,5 +87,4 @@ function includes(){
 function headers(){
     header('Content-Type: text/html; charset=utf-8');
     setlocale(LC_ALL, 'ru_RU.65001', 'rus_RUS.65001', 'Russian_Russia. 65001', 'russian');
-    $myConnect = open_database_connection();
 }

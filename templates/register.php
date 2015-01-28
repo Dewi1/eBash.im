@@ -71,3 +71,16 @@
         <input type="submit" name="submit" value="Сохранить" style="width:80px; text-align:center;">
     </center>
 </form>
+<?php if (!$login): ?>
+    <h2>Логин введен не корректно!</h2>
+<?php elseif(!$password): ?>
+    <h2>Пароль введен не корректно!</h2>
+<?php elseif(!$name): ?>
+    <h2>Имя введено не корректно!</h2>
+<?php elseif(!$email): ?>
+    <h2>Email введен не корректно!</h2>
+<?php endif; ?>
+<?php if ($register == true): ?>
+    <h2>Регестрация завершена</h2>
+<?php endif; ?>
+

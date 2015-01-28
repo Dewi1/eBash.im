@@ -1,6 +1,6 @@
 <?php $title = 'Profile'; ?>
 <center>
-    <font color="red" face="Zapf Chancery, cursive"><h1>Уважаемый <?php echo $_SESSION['user'];?></h1></font>
+    <font color="red" face="Zapf Chancery, cursive"><h1>Уважаемый <?php echo $user_name;?></h1></font>
     <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 22px" align="center">
         <pre>Вы зашли в сфой профиль,</pre>
         <pre>где вы можете:</pre>

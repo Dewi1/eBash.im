@@ -6,15 +6,8 @@ function is_email($email_check) {
         return true;
     }
 }
-function is_login($login_check) {
+function is_login_or_password($login_check) {
     if (! preg_match( '~^[A-Za-z0-9_\-]*$~i', $login_check)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-function is_pass($pass_check) {
-    if (! preg_match( '~^[A-Za-z0-9_\-]*$~i', $pass_check)) {
         return false;
     } else {
         return true;
