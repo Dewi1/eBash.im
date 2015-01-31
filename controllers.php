@@ -34,7 +34,17 @@ function html_choice() {
     includes($file = 'choice');
 }
 function login() {
-    if($_POST["login"]=='Вход') {
+    require_once "recaptchalib.php";
+    $siteKey = "6LfXPwETAAAAAKZHOFVAkgj0F7xQ0G0IbHgQm1_W";
+    $secret = "6LfXPwETAAAAAEeeVwkU3EEnIMaNTTIHuxvuibtO";
+    $lang = "ru";
+    $resp = null;
+    $error = null;
+    $reCaptcha = new ReCaptcha($secret);
+    if ($_POST["g-recaptcha-response"]) {
+        $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
+    }
+    if($_POST["login"]=='Вход' && $resp != null && $resp->success) {
         $login_check = $_POST["username"];
         if (is_login_or_password($login_check)) {
             $login = $_POST["username"];
@@ -49,13 +59,17 @@ function login() {
         }
         login_in($password, $login);
         $is_authorised = true;
-        header( 'Refresh: 0; url=/index.php?page=login' );
+        //header( 'Refresh: 0; url=/index.php?page=login' );
     }
     if($_POST["logout"]=='Выход') {
         $_SESSION['auth'] = null;
-        header( 'Refresh: 0; url=/index.php?page=login' );
+        //header( 'Refresh: 0; url=/index.php?page=login' );
     }
-    includes($file = 'login');
+    //includes($file = 'login');
+    ob_start();
+    include 'templates/login.php';
+    $content = ob_get_clean();
+    include 'templates/layout.php';
 }
 function register() {
     includes($file = 'register');

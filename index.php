@@ -1,10 +1,10 @@
 <?php
 session_start();
 define('DS', DIRECTORY_SEPARATOR);
-require 'model/database.php';
 require 'model/authorisation.php';
 require 'model/registration.php';
 require 'model/functions.php';
+require 'model/database.php';
 require 'model/check.php';
 require 'controllers.php';
 //error_reporting(E_ALL);

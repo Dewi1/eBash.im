@@ -9,6 +9,10 @@
             <br>
             <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="password" style="width:140px; text-align:center;">
             <br><br>
+            <div class="g-recaptcha" data-sitekey="<?php echo $siteKey;?>"></div>
+            <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=<?php echo $lang;?>">
+            </script>
+            <br/>
             <input type="submit" name='login' value="Вход" style="width:80px; text-align:center;">
         <?php else:?>
             <div style="width:120px; text-align:center;">
