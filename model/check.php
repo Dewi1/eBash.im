@@ -14,7 +14,7 @@ function is_login_or_password($login_check) {
     }
 }
 function is_name($name_check) {
-    if (! preg_match( '~^[A-Za-zА-Яа-я_\-]*$~i', $name_check)) {
+    if (! preg_match( '/[^а-яa-z]+/msi', $name_check)) {
         return false;
     } else {
         return true;

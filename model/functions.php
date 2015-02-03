@@ -77,8 +77,8 @@ function save_page($num){
     $result_user_page = add_user_page($num, $user_id);
     return $result_joke;
 }
-function includes($file = ''){
-    $arr_text = get_jokes();
+function render_template($arguments, $file = ''){
+    extract($arguments, EXTR_SKIP);
     ob_start();
     include 'templates/'. $file .'.php';
     $content = ob_get_clean();

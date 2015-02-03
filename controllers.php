@@ -2,14 +2,15 @@
 headers();
 function html_title() {
     $user_name = $_SESSION['user'];
-    includes($file = 'title');
+    render_template($arguments = array('user_name' => $user_name), $file = 'title');
 }
 function html_printer() {
-    includes($file = 'printing');
+    $arr_text = get_jokes();
+    render_template($arguments = array('arr_text' => $arr_text), $file = 'printing');
 }
 function html_parser() {
     $arr_text = get_jokes();
-    includes($file = 'save');
+    render_template($arguments = array('arr_text' => $arr_text), $file = 'save');
 }
 function html_choice() {
     $saved = false;
@@ -31,7 +32,7 @@ function html_choice() {
             }
         }
     }
-    includes($file = 'choice');
+    render_template($arguments = array('savedPages' => $savedPages, 'notSavedPages' => $notSavedPages, 'saved' => $saved), $file = 'choice');
 }
 function login() {
     require_once "recaptchalib.php";
@@ -65,14 +66,9 @@ function login() {
         $_SESSION['auth'] = null;
         //header( 'Refresh: 0; url=/index.php?page=login' );
     }
-    //includes($file = 'login');
-    ob_start();
-    include 'templates/login.php';
-    $content = ob_get_clean();
-    include 'templates/layout.php';
+    render_template($arguments = array('is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
 }
 function register() {
-    includes($file = 'register');
     if($_POST["sex"]=="male"){
         $sex = "male";
     }
@@ -111,12 +107,11 @@ function register() {
     $day = $_POST["day"];
     $year = $_POST["year"];
     $date = date('Y-m-d', mktime(0, 0, 0, $month, $day, $year));
-    echo '<center>';
-        if($_POST["submit"] == "Сохранить" && $_POST["password"] != "" && $_POST["login"] != "" && $_POST["email"] != ""&& $password != false && $login != false && $name != false && $email != false) {
-            $register = true;
-            registration($login, $password, $name, $email, $about, $sex, $date);
-        }
-    echo '</center>';
+    if($_POST["submit"] == "Сохранить" && $_POST["password"] != "" && $_POST["login"] != "" && $_POST["email"] != ""&& $password != false && $login != false && $name != false && $email != false) {
+        $register = true;
+        registration($login, $password, $name, $email, $about, $sex, $date);
+    }
+    render_template($arguments = array('password' => $password, 'name' => $name, 'login' => $login, 'email' => $email, 'register' => $register), $file = 'register');
 }
 function save_file() {
     $text = combine_jokes_to_string();
@@ -124,7 +119,7 @@ function save_file() {
 }
 function profile() {
     $user_name = $_SESSION['user'];
-    includes($file = 'profile');
+    render_template($arguments = array('user_name' => $user_name), $file = 'profile');
 }
 function profile_saves() {
     $user_pages = qr_result_users();
@@ -134,7 +129,7 @@ function profile_saves() {
         $jokes = qr_result_jokes($page);
         $printing = true;
     }
-    includes($file = 'profile_saves');
+    render_template($arguments = array('user_pages' => $user_pages, 'printing' => $printing, 'jokes' => $jokes, 'top' => $top), $file = 'profile_saves');
 }
 function file_download($text) {
     if (ob_get_level()) {
