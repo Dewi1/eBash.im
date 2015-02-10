@@ -11,10 +11,8 @@
                 background-position: right top;
                 background-attachment: fixed;
             }
-
         </style>
     </head>
-    <body>
     <body>
     <div class="top_head" style="position:fixed;width:3000px; height: 70px; top:0px; left:0px; border: solid 1px black; background: url(/images/head.jpg); font-size: 14px" align="center">
         <div style="position:fixed; top:0px; left:30px; width:80px; text-align:center;">

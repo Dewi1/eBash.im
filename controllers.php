@@ -35,6 +35,30 @@ function html_choice() {
     render_template($arguments = array('savedPages' => $savedPages, 'notSavedPages' => $notSavedPages, 'saved' => $saved), $file = 'choice');
 }
 function login() {
+    //vk_auth
+    $client_id = '4766442';
+    $client_secret = 'Ni6JaDROwPPricLPclgl';
+    $redirect_uri = 'http://test.ru/index.php?page=login';
+        //'http://bash.zz.vc/index.php?page=login';'https://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params))
+    $url = 'http://oauth.vk.com/authorize';
+    $params = array('client_id' => $client_id, 'redirect_uri'  => $redirect_uri, 'response_type' => 'code');
+    echo '<br><br><br><br><br><br>';
+
+    if (isset($_GET['code'])) {
+        $params = array('client_id' => $client_id, 'client_secret' => $client_secret, 'code' => $_GET['code'], 'redirect_uri' => $redirect_uri);
+        $token = json_decode(file_get_contents('http://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params))), true);
+        echo 'http://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params));
+        var_dump($token);
+    }
+    if (isset($token['access_token'])) {
+        $params = array(
+            'uids'         => $token['user_id'],
+            'fields'       => 'uid,first_name,last_name,screen_name,sex,bdate,photo_big',
+            'access_token' => $token['access_token']
+        ); var_dump($token['access_token']);
+    }
+
+    //captcha
     require_once "recaptchalib.php";
     $siteKey = "6LfXPwETAAAAAKZHOFVAkgj0F7xQ0G0IbHgQm1_W";
     $secret = "6LfXPwETAAAAAEeeVwkU3EEnIMaNTTIHuxvuibtO";
@@ -66,7 +90,7 @@ function login() {
         $_SESSION['auth'] = null;
         //header( 'Refresh: 0; url=/index.php?page=login' );
     }
-    render_template($arguments = array('is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
+    render_template($arguments = array('params' => $params, 'url' => $url, 'is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
 }
 function register() {
     if($_POST["sex"]=="male"){
@@ -146,4 +170,26 @@ function file_download($text) {
     echo $text;
 
     return $text;
+}
+function gallery() {
+    $saved = false;
+    if($_POST["import"] == "Импорт") {
+        if (is_dir($_POST["road_to_file"])) {
+            $dom = new domDocument("1.0", "utf-8");
+            $dom->load($_POST["road_to_file"]);
+            $root = $dom->documentElement;
+            $childs = $root->childNodes;
+            for ($i = 0; $i < $childs->length; $i++) {
+                $picture = $childs->item($i);
+                $lp = $picture->childNodes;
+                $id = $picture->getAttribute("id");
+                $name = $lp->item(0)->nodeValue;
+                $type = $lp->item(1)->nodeValue;
+                $width = $lp->item(2)->nodeValue;
+                $height = $lp->item(3)->nodeValue;
+            }
+            $saved = true;
+        }
+    }
+    render_template($arguments = '', $file = 'gallery');
 }

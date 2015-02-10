@@ -1,10 +1,15 @@
 <?php session_start(); $title = "Log-in"; ?>
+<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?34"></script>
+
 <center>
     <div style=" width: 808px;" align="center">
         <font color="red" face="Zapf Chancery, cursive"><h1>Вход</h1></font>
     </div>
     <form method='POST' action='/index.php?page=login'>
         <?php if (!isAuthorized()): ?>
+            <div style=" width: 320px; border-radius:6px; border: solid 1px black; background:#8B8682; align=center">
+                <p><a href="<? echo $url; ?>?<?php echo urldecode(http_build_query($params)); ?>">Аутентификация через ВКонтакте</a></p>
+            </div><br>
             <input title="Для ввода разрешены: цифры и латинские символы." type="text" name="username" style="width:140px; text-align:center;">
             <br>
             <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="password" style="width:140px; text-align:center;">

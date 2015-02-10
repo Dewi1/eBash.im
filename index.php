@@ -49,6 +49,10 @@ switch ($page) {
     case "Profile_saves":
         profile_saves();
         break;
+    case "Gallery":
+        gallery();
+        break;
+
     default:
         echo '<html><body><h1>404: Page not found!</h1></body></html>';
         break;
