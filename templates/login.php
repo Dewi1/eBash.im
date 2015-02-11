@@ -7,9 +7,7 @@
     </div>
     <form method='POST' action='/index.php?page=login'>
         <?php if (!isAuthorized()): ?>
-            <div style=" width: 320px; border-radius:6px; border: solid 1px black; background:#8B8682; align=center">
-                <p><a href="<? echo $url; ?>?<?php echo urldecode(http_build_query($params)); ?>">Аутентификация через ВКонтакте</a></p>
-            </div><br>
+            <p><a href="<? echo $url; ?>?<?php echo urldecode(http_build_query($params)); ?>"><img src="images/vk.png" width="30" height="30" alt="Войти через Вконтакте"></a></p>
             <input title="Для ввода разрешены: цифры и латинские символы." type="text" name="username" style="width:140px; text-align:center;">
             <br>
             <input title="Для ввода разрешены: цифры и латинские символы." type="password" name="password" style="width:140px; text-align:center;">

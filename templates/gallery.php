@@ -1,7 +1,7 @@
 <?php $title = 'Gallery'; ?>
 <center><br>
     <div style=" border-radius:6px; background:#CDC5BF;border: solid 1px black; width: 450px; font-size: 22px" align="center">
-        <h3>Введите страницы для сохранения в базу данных:</h3>
+        <h3>Загрузите галерею:</h3>
     </div><br>
     <form  method="post" action="/index.php?page=Gallery">
         <div style=" width: 320px; border-radius:6px; border: solid 1px black; background:#8B8682; align=center">

@@ -38,24 +38,27 @@ function login() {
     //vk_auth
     $client_id = '4766442';
     $client_secret = 'Ni6JaDROwPPricLPclgl';
-    $redirect_uri = 'http://test.ru/index.php?page=login';
-        //'http://bash.zz.vc/index.php?page=login';'https://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params))
+    $redirect_uri = 'http://ebash.im/index.php?page=login';
     $url = 'http://oauth.vk.com/authorize';
     $params = array('client_id' => $client_id, 'redirect_uri'  => $redirect_uri, 'response_type' => 'code');
     echo '<br><br><br><br><br><br>';
 
     if (isset($_GET['code'])) {
+        $result = 0;
         $params = array('client_id' => $client_id, 'client_secret' => $client_secret, 'code' => $_GET['code'], 'redirect_uri' => $redirect_uri);
-        $token = json_decode(file_get_contents('http://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params))), true);
-        echo 'http://oauth.vk.com/access_token ' . '?' . urldecode(http_build_query($params));
-        var_dump($token);
+        $token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
     }
     if (isset($token['access_token'])) {
         $params = array(
             'uids'         => $token['user_id'],
-            'fields'       => 'uid,first_name,last_name,screen_name,sex,bdate,photo_big',
+            'fields'       => 'uid,first_name,last_name',
             'access_token' => $token['access_token']
-        ); var_dump($token['access_token']);
+        );
+        $userInfo = json_decode(file_get_contents('https://api.vk.com/method/users.get' . '?' . urldecode(http_build_query($params))), true);
+        if (isset($userInfo['response'][0]['uid'])) {
+            $_SESSION['user'] = $userInfo['response'][0]['first_name'] .' ' . $userInfo['response'][0]['last_name'];
+            $_SESSION['auth'] = true;
+        }
     }
 
     //captcha
@@ -90,6 +93,7 @@ function login() {
         $_SESSION['auth'] = null;
         //header( 'Refresh: 0; url=/index.php?page=login' );
     }
+    $login = $_SESSION['user'];
     render_template($arguments = array('params' => $params, 'url' => $url, 'is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
 }
 function register() {
