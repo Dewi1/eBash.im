@@ -33,7 +33,6 @@ function picture_get_db() {
             $names[$i] = $result_attachment_id[$i]->post_title;
         }
         $url = $urls[$i] = "http://heaven.zz.mu/wp-content/uploads/2015/01/" . $names[$i];
-        //echo $names .'<br>'. $url .'<br><br><br>';
         $size = picture_get_info($url);
         $widths[$i] = $size['width'];
         $heights[$i] = $size['height'];
@@ -42,7 +41,6 @@ function picture_get_db() {
 }
 function picture_get_info($url) {
     list( $width, $height, $type, $attr ) = getimagesize( $url );
-    //echo $width . ' ' . $height;
     $size = array('width' => $width, 'height' => $height);
     return $size;
 }
@@ -64,11 +62,10 @@ function save_xml_info($urls, $names, $widths, $heights) {
         $picture->appendChild($height);
         $root->appendChild($picture);
     }
-    //$dom->save("Gallery.xml");
     $dom->formatOutput = true;
     $gallery = $dom->saveXML();
     $dom->save('Gallery.xml');
-    echo "<pre>" . htmlspecialchars($gallery) . "</pre>";
+    echo htmlspecialchars($gallery);
 }
 function load_gallery () {
     picture_get_db();
