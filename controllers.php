@@ -176,24 +176,29 @@ function file_download($text) {
     return $text;
 }
 function gallery() {
+
+    $xml = file_get_contents("http://heaven.zz.mu/?page_id=169");
+    $regexp = "#<pre>(.+)</pre>#Uis";
+    preg_match_all($regexp, $xml, $pic_xml, PREG_SET_ORDER);
+    $xml_dom = $pic_xml[0][0];
+
     $saved = false;
     if($_POST["import"] == "Импорт") {
-        if (is_dir($_POST["road_to_file"])) {
-            $dom = new domDocument("1.0", "utf-8");
-            $dom->load($_POST["road_to_file"]);
-            $root = $dom->documentElement;
-            $childs = $root->childNodes;
-            for ($i = 0; $i < $childs->length; $i++) {
-                $picture = $childs->item($i);
-                $lp = $picture->childNodes;
-                $id = $picture->getAttribute("id");
-                $name = $lp->item(0)->nodeValue;
-                $type = $lp->item(1)->nodeValue;
-                $width = $lp->item(2)->nodeValue;
-                $height = $lp->item(3)->nodeValue;
-            }
-            $saved = true;
+        $dom = new domDocument("1.0", "utf-8");
+        //$dom->load($xml_dom);
+        $dom = new SimpleXMLElement($xml_dom);
+        $childs = $dom->documentElement->childNodes;
+        for ($i = 0; $i < $childs->length; $i++) {
+            $picture = $childs->item($i);
+            $lp = $picture->childNodes;
+            $id = $picture->getAttribute("id");
+            $url = $lp->item(0)->nodeValue;
+            $name = $lp->item(1)->nodeValue;
+            $width = $lp->item(2)->nodeValue;
+            $height = $lp->item(3)->nodeValue;
         }
+        echo '<br><br><br><br><br><br>'.'url = ' . $picture;
+        //$saved = true;
     }
-    render_template($arguments = '', $file = 'gallery');
+    render_template($arguments = array('url' => $url, 'name' => $name, 'width' => $width, 'height' => $height, 'saved' => $saved), $file = 'gallery');
 }
