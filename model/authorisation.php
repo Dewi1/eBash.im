@@ -1,6 +1,6 @@
 <?php
 function login_in($password, $login) {
-    $qr_result_users = mysql_query("select * from users where login=".$login);
+    $qr_result_users = mysql_query("SELECT * FROM users WHERE login='$login'");
     $users = mysql_fetch_array($qr_result_users);
     if ($password == $users["password"]) {
         $_SESSION['auth'] = true;

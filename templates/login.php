@@ -31,7 +31,8 @@
     <?php if ($is_authorised): ?>
         <?php if (!$login): ?>
             <h2>Логин введен не корректно!</h2>
-        <?php elseif(!$password): ?>
+        <?php endif; ?>
+        <?php if(!$password): ?>
             <h2>Пароль введен не корректно!</h2>
         <?php endif; ?>
     <?php endif; ?>

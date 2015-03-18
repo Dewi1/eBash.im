@@ -38,7 +38,7 @@ function login() {
     //vk_auth
     $client_id = '4766442';
     $client_secret = 'Ni6JaDROwPPricLPclgl';
-    $redirect_uri = 'http://ebash.im/index.php?page=login';
+    $redirect_uri = 'http://ebash.local/index.php?page=login';
     $url = 'http://oauth.vk.com/authorize';
     $params = array('client_id' => $client_id, 'redirect_uri'  => $redirect_uri, 'response_type' => 'code');
     echo '<br><br><br><br><br><br>';
@@ -60,7 +60,6 @@ function login() {
             $_SESSION['auth'] = true;
         }
     }
-
     //captcha
     require_once "recaptchalib.php";
     $siteKey = "6LfXPwETAAAAAKZHOFVAkgj0F7xQ0G0IbHgQm1_W";
@@ -72,18 +71,19 @@ function login() {
     if ($_POST["g-recaptcha-response"]) {
         $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
     }
+    //-----
     if($_POST["login"]=='Вход' && $resp != null && $resp->success) {
         $login_check = $_POST["username"];
         if (is_login_or_password($login_check)) {
             $login = $_POST["username"];
         } else {
-            $login = false;
+            $login = false;echo 'login false';
         }
-        $pass_check = $_POST["password"];
+        $pass_check = sha1($_POST["password"]);
         if (is_login_or_password($pass_check)) {
-            $password = sha1($_POST["password"]);
+            $password = $pass_check;
         } else {
-            $password = false;
+            $password = false;echo 'pass false';
         }
         login_in($password, $login);
         $is_authorised = true;
@@ -97,6 +97,12 @@ function login() {
     render_template($arguments = array('params' => $params, 'url' => $url, 'is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
 }
 function register() {
+    //Upload image
+    if(isset($_SESSION['image'])) {
+        echo '<br><br><br><br><br>'.$_SESSION['image'];
+    }
+
+    //Register form
     if($_POST["sex"]=="male"){
         $sex = "male";
     }
@@ -119,7 +125,7 @@ function register() {
         $name_check = $_POST["name"];
         if (is_name($name_check)) {
             $name = $_POST["name"];
-        } else {
+        }else{
             $name = false;
         }
         $email_check = $_POST["email"];
@@ -128,18 +134,24 @@ function register() {
         } else {
             $email = false;
         }
-        $about = convert_uuencode($_POST["about"]); //convert_uudecode для конвертации в нормальный вид
+        $about = htmlspecialchars($_POST["about"]);
     }
     $month_word = $_POST["month"];
     $month = month($month_word);
     $day = $_POST["day"];
     $year = $_POST["year"];
     $date = date('Y-m-d', mktime(0, 0, 0, $month, $day, $year));
-    if($_POST["submit"] == "Сохранить" && $_POST["password"] != "" && $_POST["login"] != "" && $_POST["email"] != ""&& $password != false && $login != false && $name != false && $email != false) {
-        $register = true;
-        registration($login, $password, $name, $email, $about, $sex, $date);
+    if($_POST["submit"] == "Сохранить")
+    {
+        $register = 1;
     }
-    render_template($arguments = array('password' => $password, 'name' => $name, 'login' => $login, 'email' => $email, 'register' => $register), $file = 'register');
+    if($_POST["submit"] == "Сохранить" && $_POST["password"] != "" && $_POST["login"] != "" && $_POST["email"] != "" && $password != false && $login != false && $email != false) {
+        $register = 2;
+        registration($login, $password, $name, $email, $about, $sex, $date);
+    }else{
+        $register = 0;
+    }
+    render_template($arguments = array('password' => $password, 'login' => $login, 'email' => $email, 'register' => $register), $file = 'register');
 }
 function save_file() {
     $text = combine_jokes_to_string();

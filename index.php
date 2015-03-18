@@ -15,7 +15,7 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
     $_SESSION['page'] = $page;
 }
-$private_pages = array('choice', 'save', 'Profile', 'Profile_saves', 'save_file');
+$private_pages = array('choice', 'save', 'Profile', 'Profile_saves', 'save_file', 'Gallery');
 $key = array_search($page, $private_pages);
 if ($key !== false && !isAuthorized()){
     header( 'Refresh: 0; url=/index.php?page=login' );
