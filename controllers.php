@@ -159,7 +159,16 @@ function save_file() {
 }
 function profile() {
     $user_name = $_SESSION['user'];
-    render_template($arguments = array('user_name' => $user_name), $file = 'profile');
+
+    $users = $_SESSION['user_id'];
+    $qr_paid_arr = mysql_query("select donated from users where id = ".$users);
+    $paid_arr = array();
+    while ($paid_qr = mysql_fetch_array($qr_paid_arr)) {
+        $paid_arr[] = $paid_qr;
+    }
+
+    $paid = $paid_arr[0][0];
+    render_template($arguments = array('paid_arr' => $paid_arr, 'paid' => $paid, 'user_name' => $user_name), $file = 'profile');
 }
 function profile_saves() {
     $user_pages = qr_result_users();
@@ -207,4 +216,12 @@ function gallery() {
         $saved = true;
     }
     render_template($arguments = array('url' => $url, 'name' => $name, 'width' => $width, 'height' => $height, 'saved' => $saved), $file = 'gallery');
+}
+function donate() {
+    $url = 'https://auth.robokassa.ru/Merchant/PaymentForm/FormMS.js';
+    $user_name = $_SESSION['user'];
+    if($_POST["submit"] == 'Donate'){
+        $pay = $_POST['pay'];
+    }
+    render_template($arguments = array('user_name' => $user_name, 'url' => $url, 'pay' => $pay), $file = 'donate');
 }

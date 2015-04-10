@@ -32,6 +32,9 @@
             <div style="position:fixed; border: solid 1px black; border-radius:6px; background:#CDC5BF; top:27px; right:490px; width:80px; text-align:center;">
                 <a href="/index.php?page=Profile">Профиль</a>
             </div>
+            <div style="position:fixed; border: solid 1px black; border-radius:6px; background:#CDC5BF; top:27px; left:300px; width:90px; text-align:center;">
+                <a href="/index.php?page=Donate">Donate</a>
+            </div>
         <?php endif?>
         <div style="position:fixed; border: solid 1px black; border-radius:6px; background:#CDC5BF; top:27px; right:290px; width:90px; text-align:center;">
             <a href="/index.php?page=register">Регистрация</a>
