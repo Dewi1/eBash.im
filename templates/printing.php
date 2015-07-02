@@ -12,3 +12,8 @@
     </center>
     <br><br>
 <? endforeach ?>
+<center>
+    <form method='POST' action='/index.php?page=Printing'>
+        <input type="submit" name="submit" value="Следующая">
+    </form>
+</center>

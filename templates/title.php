@@ -26,5 +26,8 @@
         <div style=" width: 320px; border-radius:6px; border: solid 1px black; background:#8B8682; align=center">
             <a href="/index.php?page=Gallery">Просмотреть галлерею</a>
         </div><br>
+        <div style=" width: 320px; border-radius:6px; border: solid 1px black; background:#BBFFBB; align=center">
+            <a href="/index.php?page=Shop">Магазин</a>
+        </div><br>
     </center>
 </form>

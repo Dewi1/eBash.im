@@ -24,16 +24,16 @@
         <?php endif ?>
     </form>
     <?php if (isAuthorized()): ?>
-        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как: <?php echo $login;?></h2></font>
+        <font color="red" face="Zapf Chancery, cursive"><h2>Вы авторизированы как: <?php echo $user_name;?></h2></font>
     <?php else: ?>
         <font color="red" face="Zapf Chancery, cursive"><h2>Вы не авторизированы</h2></font>
     <?php endif; ?>
     <?php if ($is_authorised): ?>
-        <?php if (!$login): ?>
-            <h2>Логин введен не корректно!</h2>
+        <?php if ($login == false or $password == false ): ?>
+            <h2>Логин или пароль введены не корректно!</h2>
         <?php endif; ?>
-        <?php if(!$password): ?>
-            <h2>Пароль введен не корректно!</h2>
-        <?php endif; ?>
+    <?php endif; ?>
+    <?php if($captcha == false):?>
+        <h2>Для авторизации введите каптчу!</h2>
     <?php endif; ?>
 </center>

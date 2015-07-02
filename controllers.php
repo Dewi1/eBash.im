@@ -6,6 +6,19 @@ function html_title() {
 }
 function html_printer() {
     $arr_text = get_jokes();
+    $max_page = max_page();
+    $page = $max_page;
+    if($_POST["submit"] == "Следующая") {
+        $arr_text = get_jokes($url = 'http://bash.im/index/' . $page);
+    }
+    /*if(!isset($_POST["submit"])){
+        $i = 0;
+    }
+    if($_POST["submit"] == "Следующая") {
+        $i++;
+        $page -= $i;
+        $arr_text = get_jokes($url = 'http://bash.im/index/'. $page);
+    }*/
     render_template($arguments = array('arr_text' => $arr_text), $file = 'printing');
 }
 function html_parser() {
@@ -72,29 +85,38 @@ function login() {
         $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
     }
     //-----
+    $captcha = null;
     if($_POST["login"]=='Вход' && $resp != null && $resp->success) {
         $login_check = $_POST["username"];
         if (is_login_or_password($login_check)) {
             $login = $_POST["username"];
         } else {
-            $login = false;echo 'login false';
+            $login = false;
         }
         $pass_check = sha1($_POST["password"]);
         if (is_login_or_password($pass_check)) {
             $password = $pass_check;
         } else {
-            $password = false;echo 'pass false';
+            $password = false;
         }
-        login_in($password, $login);
+        if($login == true && $password == true) {
+            $users = login_in($password, $login);
+        }
+        if(!$users) {
+            $login = false;
+            $password = false;
+        }
+        $captcha = true;
         $is_authorised = true;
-        //header( 'Refresh: 0; url=/index.php?page=login' );
+    }else{
+        $captcha = false;
     }
     if($_POST["logout"]=='Выход') {
         $_SESSION['auth'] = null;
         //header( 'Refresh: 0; url=/index.php?page=login' );
     }
-    $login = $_SESSION['user'];
-    render_template($arguments = array('params' => $params, 'url' => $url, 'is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'login' => $login), $file = 'login');
+    $user_name = $_SESSION['user'];
+    render_template($arguments = array('captcha' => $captcha, 'user_name' => $user_name, 'params' => $params, 'url' => $url, 'is_authorised' => $is_authorised, 'siteKey' => $siteKey, 'password' =>$password, 'login' => $login), $file = 'login');
 }
 function register() {
     //Upload image
@@ -159,16 +181,7 @@ function save_file() {
 }
 function profile() {
     $user_name = $_SESSION['user'];
-
-    $users = $_SESSION['user_id'];
-    $qr_paid_arr = mysql_query("select donated from users where id = ".$users);
-    $paid_arr = array();
-    while ($paid_qr = mysql_fetch_array($qr_paid_arr)) {
-        $paid_arr[] = $paid_qr;
-    }
-
-    $paid = $paid_arr[0][0];
-    render_template($arguments = array('paid_arr' => $paid_arr, 'paid' => $paid, 'user_name' => $user_name), $file = 'profile');
+    render_template($arguments = array('user_name' => $user_name), $file = 'profile');
 }
 function profile_saves() {
     $user_pages = qr_result_users();
@@ -221,7 +234,176 @@ function donate() {
     $url = 'https://auth.robokassa.ru/Merchant/PaymentForm/FormMS.js';
     $user_name = $_SESSION['user'];
     if($_POST["submit"] == 'Donate'){
-        $pay = $_POST['pay'];
+        $paid = $_POST['pay'];
+        $_SESSION['pay'] = $paid;
+        header('Refresh: 0; url=/index.php?page=Donate_choice');
     }
-    render_template($arguments = array('user_name' => $user_name, 'url' => $url, 'pay' => $pay), $file = 'donate');
+    render_template($arguments = array('user_name' => $user_name, 'url' => $url, 'paid' => $paid), $file = 'donate');
+}
+function success() {
+    $user_name = $_SESSION['user'];
+    $paid = $_SESSION['pay'];
+    $paid_date = date("Y-m-d h:i:s");
+    $user_id = $_SESSION['user_id'];
+    donate_add($paid_date, $paid, $user_id);
+    render_template($arguments = array('pay' => $paid, 'user_name' => $user_name), $file = 'success');
+}
+function fail() {
+    $user_name = $_SESSION['user'];
+    if ($_POST['orderId'] != '') {
+        $orderId = $_POST['orderId'];
+        orderFail($orderId);
+    }
+    render_template($arguments = array('user_name' => $user_name), $file = 'fail');
+}
+function result() {
+    $mrh_pass2 = "pass2222";
+    $inv_id = $_REQUEST["InvId"];
+    $out_summ = $_REQUEST["OutSum"];
+    $shp_item = $_REQUEST["Shp_item"];
+    $crc = $_REQUEST["SignatureValue"];
+
+    if ($_POST['orderId'] != '') {
+        $orderId = $_POST['orderId'];
+        orderPayed($orderId);
+    }
+    $userId = $_SESSION['user_id'];
+
+    $items = Cart::getInstance()->getAll();
+    foreach ($items as $itemId => $count) {
+        $item = checkItemInProfile($itemId, $userId);
+        if($item != false) {
+            addItemToProfile($itemId, $userId);
+            updateAmountInProfile($itemId, $userId, $count);
+        }else{
+            updateAmountInProfile($itemId, $userId, $count);
+        }
+    }
+
+    $crc = strtoupper($crc);
+    $my_crc = strtoupper(md5("$out_summ:$inv_id:$mrh_pass2:Shp_item=$shp_item"));
+    if ($my_crc !=$crc)
+    {
+        echo "Ошибка: подпись не корректна.\n";
+        exit();
+    }
+    if ($_POST['SignatureValue'] != md5($out_summ . ":" . $id . ":" . $mrh_pass2)) {
+        echo "Ошибка: не совпала контрольная сумма\n";
+        exit();
+    }
+    echo "OK$inv_id\n";
+    exit();
+}
+function profile_donates() {
+    $sum_paid = summary_paid();
+    $user_id = $_SESSION['user_id'];
+    $paids = get_paid($user_id);
+    $user_name = $_SESSION['user'];
+    render_template($arguments = array('sum_paid' => $sum_paid, 'paids' => $paids, 'user_name' => $user_name), $file = 'profile_donates');
+}
+function donate_choice() {
+    $user_name = $_SESSION['user'];
+    render_template($arguments = array('user_name' => $user_name), $file = 'donate_choice');
+}
+function shop() {
+    $items = takeAllItems();
+    $inBasket = false;
+    if($_POST['order'] == "В корзину") {
+        $itemId = $_POST["item_id"];
+        $count = $_POST["count"];
+        if(Cart::getInstance()->isAdded($itemId) == true) {
+            $inBasket = true;
+            $inBasketId = $itemId;
+        }else{
+            Cart::getInstance()->add($itemId, $count);
+        }
+    }
+    if($_POST['orderCancel'] == "Отменить заказ") {
+        $userId = $_SESSION['user_id'];
+        $orderId = getOrderByUserId($userId);
+        orderCancel($orderId);
+    }
+    render_template($arguments = array('inBasketId' => $inBasketId, 'inBasket' => $inBasket, 'items' => $items), $file = 'shop');
+}
+function basket() {
+    $userName = $_SESSION['user'];
+    $userId = $_SESSION['user_id'];
+    $items = Cart::getInstance()->getAll();
+    $count = $_POST['count'];
+    $itemId = $_POST['item_id'];
+    $totalSum = takeTotalSum($items);
+    if($_POST['order1'] == "Изменить") {
+        Cart::getInstance()->setCount($itemId, $count);
+        header('Refresh: 0; url=/index.php?page=Basket');
+    }
+    if($_POST['order2'] == "Удалить") {
+        Cart::getInstance()->remove($itemId);
+        header('Refresh: 0; url=/index.php?page=Basket');
+    }
+    if($_POST['delete'] == "Очистить корзину") {
+        Cart::getInstance()->clear();
+        header('Refresh: 0; url=/index.php?page=Basket');
+    }
+    if($_POST['save'] == "Сохранить заказ") {
+        $orderId = createNewOrder($userId);
+        foreach ($items as $itemId => $count) {
+            addItemsToDB($itemId, $count, $orderId, $totalSum);
+        }
+        Cart::getInstance()->clear();
+        header('Refresh: 0; url=/index.php?page=Shop');
+    }
+    render_template($arguments = array('totalSum' => $totalSum, 'userId' => $userId, 'items' => $items, 'userName' => $userName), $file = 'basket');
+}
+function design() {
+    $userId = $_SESSION['user_id'];
+    $items = Cart::getInstance()->getAll();
+    $totalSum = takeTotalSum($items);
+    if($_POST['submit'] == "Оформить заказ") {
+        $address = $_POST['address'];
+        $orderId = createNewOrder($userId);
+        foreach ($items as $itemId => $count) {
+            addItemsToDB($itemId, $count, $orderId, $totalSum);
+        }
+        addNewAddress($address, $userId);
+    }
+    if($_POST['submit'] == "Оплатить") {
+        $orderId = $_POST['order_id'];
+        $totalSum = takeTotalSumWithId($orderId);
+        $itemsTakeFromBD = takeItemsIds($orderId);
+    }else{
+        $totalSum = takeTotalSum($items);
+        $orderId = getOrderByUserId($userId);
+        $itemsTakeFromBD = takeItemsIds($orderId);
+    }
+    render_template($arguments = array('orderId' => $orderId, 'itemsTakeFromBD' => $itemsTakeFromBD, 'items' => $items, 'totalSum' => $totalSum), $file = 'design');
+}
+function profile_orders() {
+    $userId = $_SESSION['user_id'];
+    $orders = takeAllOrders($userId);
+    render_template($arguments = array('orders' => $orders), $file = 'profile_orders');
+}
+
+function profile_items() {
+    $userId = $_SESSION['user_id'];
+    $items = takeAllUserItems($userId);
+    render_template($arguments = array('items' => $items), $file = 'profile_items');
+}
+function actions() {
+    $count = $_POST['count'];
+    $itemId = $_POST['item_id'];
+    //--------------------------
+    $newCount = $_POST['count'];
+    $oldCount = $_POST['oldCount'];
+    $itemPrice = $_POST['itemPrice'];
+    $oldTotalSum = $_POST['oldTotalSum'];
+    $totalItemsSum = $newCount*$itemPrice;
+    $totalSum = Cart::getInstance()->totalSum($oldTotalSum, $newCount, $oldCount, $itemPrice);
+    //---------------------------------------
+    if($count != false && $itemId != false) {
+        Cart::getInstance()->setCount($itemId, $count);
+    }
+    $json = $itemId.', '.$count;
+    echo json_decode($json);
+
+    render_template($arguments = array('totalItemsSum' => $totalItemsSum,'totalSum' => $totalSum), $file = 'actions');
 }

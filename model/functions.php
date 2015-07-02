@@ -61,7 +61,7 @@ function prepare_number($number){
     return $num;
 }*/
 function save_page($num){
-    $arr_text = get_jokes('http://bash.im/index/'. $num);
+    $arr_text = get_jokes('http://bash.imz/index/'. $num);
     foreach ($arr_text as $value) {
         $rating = $value[1]; $date = $value[2]; $number = $value[3];
         $number = prepare_number($number);
